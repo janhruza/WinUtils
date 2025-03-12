@@ -5,8 +5,8 @@
 
 #pragma once
 #include <iostream>
-#include <TlHelp32.h>
 #include <Windows.h>
+#include <TlHelp32.h>
 
 #pragma region Data types
 
@@ -61,20 +61,35 @@ inline MURESULT WriteMemory32(HANDLE hProcess, LPVOID address, int value)
 #pragma endregion
 
 #pragma region Process maniulation
+const char* ConvertWCharToChar(const WCHAR* wStr) {
+	int size_needed = WideCharToMultiByte(CP_UTF8, 0, wStr, -1, NULL, 0, NULL, NULL);
+	char* cStr = new char[size_needed];
+	WideCharToMultiByte(CP_UTF8, 0, wStr, -1, cStr, size_needed, NULL, NULL);
+	return cStr;
+}
 
 inline DWORD GetProcessID(const char* processName) {
 	PROCESSENTRY32 processEntry;
 	processEntry.dwSize = sizeof(PROCESSENTRY32);
 
 	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	if (Process32First(snapshot, &processEntry) == TRUE) {
-		while (Process32Next(snapshot, &processEntry) == TRUE) {
-			if (strcmp(processEntry.szExeFile, processName) == 0) {
-				CloseHandle(snapshot);
-				return processEntry.th32ProcessID;
-			}
-		}
+	if (snapshot == INVALID_HANDLE_VALUE) {
+		std::cerr << "Error: Unable to create snapshot." << std::endl;
+		return 0;
 	}
+
+	if (Process32First(snapshot, &processEntry) == TRUE) {
+		do {
+			const char* exeFile = ConvertWCharToChar(processEntry.szExeFile);
+
+			if (strcmp(exeFile, processName) == 0) {
+				DWORD processID = processEntry.th32ProcessID;
+				CloseHandle(snapshot);
+				return processID;
+			}
+		} while (Process32Next(snapshot, &processEntry) == TRUE);
+	}
+
 	CloseHandle(snapshot);
 	return 0;
 }
