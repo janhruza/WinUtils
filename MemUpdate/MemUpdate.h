@@ -8,6 +8,8 @@
 #include <TlHelp32.h>
 #include <Windows.h>
 
+#pragma region Data types
+
 typedef enum MURESULT
 {
 	MU_OK,
@@ -18,6 +20,8 @@ typedef enum MURESULT
 	MU_INVALID_HANDLE,
 	MU_INVALID_SIZE
 };
+
+#pragma endregion
 
 #pragma region Memory manipulation
 
@@ -84,7 +88,15 @@ typedef struct MU_SESSION
 {
 	DWORD dwProcessID;
 	HANDLE hProcess;
+	PCHAR sProcessName;
 };
+
+inline void FreeSession(MU_SESSION* session)
+{
+	if (session == nullptr) return;
+	ZeroMemory(session, sizeof(MU_SESSION));
+	return;
+}
 
 inline MURESULT BeginSession(LPSTR processName, MU_SESSION* session)
 {
@@ -93,7 +105,7 @@ inline MURESULT BeginSession(LPSTR processName, MU_SESSION* session)
 		return MU_INVALID_HANDLE;
 	}
 
-	ZeroMemory(session, sizeof(MU_SESSION));
+	FreeSession(session);
 	if (strlen(processName) == NULL) return MU_INVALID_SIZE;
 
 	DWORD id = GetProcessID(processName);
@@ -102,13 +114,14 @@ inline MURESULT BeginSession(LPSTR processName, MU_SESSION* session)
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, id);
 	session->dwProcessID = id;
 	session->hProcess = hProcess;
+	session->sProcessName = processName;
 	return MU_OK;
 }
 
 inline MURESULT EndSession(MU_SESSION* session)
 {
 	if (session == nullptr) return MU_INVALID_HANDLE;
-	ZeroMemory(session, sizeof(MU_SESSION));
+	FreeSession(session);
 	return MU_OK;
 }
 
