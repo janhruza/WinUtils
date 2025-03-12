@@ -6,5 +6,16 @@
 
 int main(int argc, const char* argv[])
 {
+	if (argc == 1)
+	{
+		// get data with UI
+	}
+
+	else
+	{
+		// load data from parameters
+	}
+
+
 	return EXIT_SUCCESS;
 }

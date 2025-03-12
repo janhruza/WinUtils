@@ -4,6 +4,8 @@
 */
 
 #pragma once
+#include <iostream>
+#include <TlHelp32.h>
 #include <Windows.h>
 
 typedef enum MURESULT
@@ -16,6 +18,8 @@ typedef enum MURESULT
 	MU_INVALID_HANDLE,
 	MU_INVALID_SIZE
 };
+
+#pragma region Memory manipulation
 
 inline MURESULT ReadMemory(HANDLE hProcess, LPVOID address, int *buffer, SIZE_T size)
 {
@@ -49,3 +53,50 @@ inline MURESULT WriteMemory32(HANDLE hProcess, LPVOID address, int value)
 {
 	return WriteMemory(hProcess, address, &value, sizeof(int));
 }
+
+#pragma endregion
+
+#pragma region Process maniulation
+
+inline DWORD GetProcessID(const char* processName) {
+	PROCESSENTRY32 processEntry;
+	processEntry.dwSize = sizeof(PROCESSENTRY32);
+
+	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	if (Process32First(snapshot, &processEntry) == TRUE) {
+		while (Process32Next(snapshot, &processEntry) == TRUE) {
+			if (strcmp(processEntry.szExeFile, processName) == 0) {
+				CloseHandle(snapshot);
+				return processEntry.th32ProcessID;
+			}
+		}
+	}
+	CloseHandle(snapshot);
+	return 0;
+}
+
+#pragma endregion
+
+
+#pragma region Session details
+
+typedef struct MU_SESSION
+{
+	DWORD dwProcessID;
+	HANDLE hProcess;
+};
+
+inline MURESULT BeginSession(LPSTR processName, MU_SESSION* session)
+{
+	if (strlen(processName) == NULL) return MU_INVALID_SIZE;
+
+	DWORD id = GetProcessID(processName);
+	if (id == 0) return MU_INVALID_PROCESS;
+
+	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, id);
+	session->dwProcessID = id;
+	session->hProcess = hProcess;
+	return MU_OK;
+}
+
+#pragma endregion
