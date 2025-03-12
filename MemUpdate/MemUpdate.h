@@ -78,7 +78,7 @@ inline DWORD GetProcessID(const char* processName) {
 #pragma endregion
 
 
-#pragma region Session details
+#pragma region Session details and logic
 
 typedef struct MU_SESSION
 {
@@ -88,6 +88,12 @@ typedef struct MU_SESSION
 
 inline MURESULT BeginSession(LPSTR processName, MU_SESSION* session)
 {
+	if (session == nullptr)
+	{
+		return MU_INVALID_HANDLE;
+	}
+
+	ZeroMemory(session, sizeof(MU_SESSION));
 	if (strlen(processName) == NULL) return MU_INVALID_SIZE;
 
 	DWORD id = GetProcessID(processName);
@@ -96,6 +102,13 @@ inline MURESULT BeginSession(LPSTR processName, MU_SESSION* session)
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, id);
 	session->dwProcessID = id;
 	session->hProcess = hProcess;
+	return MU_OK;
+}
+
+inline MURESULT EndSession(MU_SESSION* session)
+{
+	if (session == nullptr) return MU_INVALID_HANDLE;
+	ZeroMemory(session, sizeof(MU_SESSION));
 	return MU_OK;
 }
 
