@@ -19,23 +19,19 @@ int main(int argc, const char* argv[])
 
 	if (argc == 1)
 	{
-		start_no_args:
+		// Beginning of the main function when no arguments are passed.
+	start_no_args:
+
 		// get data with UI
 		// get process name
-		char processName[MAX_PATH];
+		char processName[MAX_PATH] = { NULL };
 
 		printf_s("Enter process name\n# ");
-		(void)scanf_s("%259s", &processName, MAX_PATH);
-
-		if (strcmp(processName, "\0") == 0)
-		{
-			printf_s("\nInvalid input.\n");
-			return EXIT_FAILURE;
-		}
+		(void)scanf_s("%s", &processName, MAX_PATH);
 		
 		if (BeginSession(processName, &session) != MU_OK)
 		{
-			printf_s("\nUnable to initialize the session. Make sure the process \'%s\' exists.\n\nTry again? [Y/n]: ", processName);
+			printf_s("Unable to initialize the session. Make sure the process \'%s\' exists.\nTry again? [Y/n]: ", processName);
 			(void)getchar();
 
 			int c = getchar();
@@ -83,11 +79,15 @@ int main(int argc, const char* argv[])
 		//	- print result
 
 		// get user input
-		LPSTR input[MAX_PATH];
+		LPSTR input[MAX_PATH] = { NULL };
 		printf_s("[%s (%d)]# ", session.sProcessName, session.dwProcessID);
-		scanf_s("%s", &input);
+		(void)scanf_s("%s", (STRING)input, MAX_PATH);
+		(void)getchar();
 
-		printf_s("%s\n", &input);
+		if (strcmp((STRING)input, "exit") == 0)
+		{
+			return EXIT_SUCCESS;
+		}
 	}
 
 	return EXIT_SUCCESS;

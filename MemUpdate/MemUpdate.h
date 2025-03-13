@@ -10,6 +10,8 @@
 
 #pragma region Data types
 
+typedef const char* STRING;
+
 typedef enum MURESULT
 {
 	MU_OK,
