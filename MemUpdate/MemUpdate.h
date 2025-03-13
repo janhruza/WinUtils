@@ -74,7 +74,7 @@ inline DWORD GetProcessID(const char* processName) {
 
 	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 	if (snapshot == INVALID_HANDLE_VALUE) {
-		std::cerr << "Error: Unable to create snapshot." << std::endl;
+		perror("Error: Unable to create snapshot.");
 		return 0;
 	}
 
