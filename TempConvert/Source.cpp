@@ -38,6 +38,14 @@ inline void DrawError(LPCWSTR message)
 	return;
 }
 
+inline void AppInvalidIndex(int idxFrom, int idxTo)
+{
+	WCHAR wcMsg[MAX_PATH];
+	swprintf_s(wcMsg, MAX_PATH, L"Invalid index value. TempFrom=%d, TempTo=%d", idxFrom, idxTo);
+	DrawError(wcMsg);
+	return;
+}
+
 inline static void AppConvertTemperature()
 {
 	int iTempFrom = SendMessage(hCbxTempFrom, CB_GETCURSEL, NULL, NULL);
@@ -82,6 +90,8 @@ inline static void AppConvertTemperature()
 				break;
 
 			default:
+				// invalid TempTo index
+				AppInvalidIndex(iTempFrom, iTempTo);
 				break;
 		}
 	}
@@ -109,6 +119,8 @@ inline static void AppConvertTemperature()
 				break;
 
 			default:
+				// invalid TempTo index
+				AppInvalidIndex(iTempFrom, iTempTo);
 				break;
 		}
 	}
@@ -136,16 +148,16 @@ inline static void AppConvertTemperature()
 				break;
 
 			default:
+				// invalid TempTo index
+				AppInvalidIndex(iTempFrom, iTempTo);
 				break;
 		}
 	}
 
 	else
 	{
-		// invalid index
-		WCHAR wcMsg[MAX_PATH];
-		swprintf_s(wcMsg, MAX_PATH, L"Invalid index value. TempFrom=%d, TempTo=%d", iTempFrom, iTempTo);
-		DrawError(wcMsg);
+		// invalid TempFrom index
+		AppInvalidIndex(iTempFrom, iTempTo);
 	}
 
 	return;
