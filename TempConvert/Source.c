@@ -13,11 +13,11 @@
 #define TEMP_INDEX_F	1
 #define TEMP_INDEX_K	2
 
-inline HWND hWindow;
-inline HWND hCbxTempFrom;
-inline HWND hCbxTempTo;
-inline HWND hTxtResult;
-inline HWND hTxtValue;
+HWND hWindow;
+HWND hCbxTempFrom;
+HWND hCbxTempTo;
+HWND hTxtResult;
+HWND hTxtValue;
 
 inline static void DrawResult(LPCWSTR lpszFrom, LPCWSTR lpszTo, DOUBLE dValue, DOUBLE dResult)
 {
