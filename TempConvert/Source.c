@@ -60,7 +60,7 @@ inline static void AppConvertTemperature()
 	dValue = _wtof(lpszValue);
 	dResult = 0;
 
-	if (dValue == 0)
+	if (dValue == 0 && lstrlenW(lpszValue) == 0)
 	{
 		DrawError(L"Invalid input value.");
 		return;
