@@ -4,6 +4,14 @@
 #include <dwmapi.h>
 #pragma comment(lib, "dwmapi.lib")
 
+#include <CommCtrl.h>
+#pragma comment(lib, "ComCtl32.lib")
+#pragma comment(lib, "UxTheme.lib")
+
+#pragma comment(linker,"\"/manifestdependency:type='win32' \
+name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
+processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
 #define TEMPERATURE_CELSIUS		L"Celsius"
 #define TEMPERATURE_FAHRENHEIT	L"Fahrenheit"
 #define TEMPERATURE_KELVIN		L"Kelvin"
@@ -18,6 +26,15 @@ HWND hCbxTempFrom;
 HWND hCbxTempTo;
 HWND hTxtResult;
 HWND hTxtValue;
+
+inline static void EnableVisualStyles()
+{
+	INITCOMMONCONTROLSEX icex;
+	icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
+	icex.dwICC = ICC_STANDARD_CLASSES;
+	InitCommonControlsEx(&icex);
+	return;
+}
 
 inline static void DrawResult(LPCWSTR lpszFrom, LPCWSTR lpszTo, DOUBLE dValue, DOUBLE dResult)
 {
@@ -169,6 +186,8 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_INITDIALOG:
 		{
+			EnableThemeDialogTexture(hDlg, ETDT_ENABLE);
+			// set visual styles
 			// set DWM status
 			/*DWMNCRENDERINGPOLICY dwmValue = DWMNCRP_DISABLED;
 			DwmSetWindowAttribute(hDlg, DWMWA_NCRENDERING_POLICY, &dwmValue, sizeof(DWMNCRENDERINGPOLICY));*/
@@ -179,6 +198,17 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 			hCbxTempTo = GetDlgItem(hDlg, IDC_CBX_TEMP_TO);
 			hTxtValue = GetDlgItem(hDlg, IDC_TXT_VALUE);
 			hTxtResult = GetDlgItem(hDlg, IDC_TXT_RESULT);
+
+			HWND hBtnConvert = GetDlgItem(hDlg, IDC_BTN_CONVERT);
+			HWND hBtnClose = GetDlgItem(hDlg, IDC_BTN_CLOSE);
+
+			SetWindowTheme(hBtnConvert, L"Explorer", NULL);
+
+			// Apply visual styles to specific controls
+			/*SetWindowTheme(hCbxTempFrom, L"Explorer", NULL);
+			SetWindowTheme(hCbxTempTo, L"Explorer", NULL);
+			SetWindowTheme(hTxtValue, L"Explorer", NULL);
+			SetWindowTheme(hTxtResult, L"Explorer", NULL);*/
 
 			// set combo box items
 			// Temperature From
@@ -244,6 +274,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpszCmdLine, int nCmdShow)
 {
+	//EnableVisualStyles();
 	DialogBox(hInstance, MAKEINTRESOURCE(IDD_FORMVIEW), NULL, DialogProc);
 	return 0;
 }
