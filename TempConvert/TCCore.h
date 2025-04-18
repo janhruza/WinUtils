@@ -27,7 +27,7 @@ inline void TcSetComboBoxDropdownHeight(HWND hComboBox, int dropdownHeight) {
 /// <returns></returns>
 inline DOUBLE TcCTOF(DOUBLE dValue)
 {
-	return 0;
+	return (dValue * (9.0 / 5.0)) + 32;
 }
 
 /// <summary>
@@ -37,7 +37,7 @@ inline DOUBLE TcCTOF(DOUBLE dValue)
 /// <returns></returns>
 inline DOUBLE TcCTOK(DOUBLE dValue)
 {
-	return 0;
+	return dValue + 273.15;
 }
 
 /// <summary>
@@ -47,7 +47,7 @@ inline DOUBLE TcCTOK(DOUBLE dValue)
 /// <returns></returns>
 inline DOUBLE TcFTOC(DOUBLE dValue)
 {
-	return 0;
+	return (dValue - 32) * (5.0 / 9.0);
 }
 
 /// <summary>
@@ -57,7 +57,7 @@ inline DOUBLE TcFTOC(DOUBLE dValue)
 /// <returns></returns>
 inline DOUBLE TcFTOK(DOUBLE dValue)
 {
-	return 0;
+	return (dValue - 32) * (5.0 / 9.0) + 273.15;
 }
 
 /// <summary>
@@ -67,7 +67,7 @@ inline DOUBLE TcFTOK(DOUBLE dValue)
 /// <returns></returns>
 inline DOUBLE TcKTOC(DOUBLE dValue)
 {
-	return 0;
+	return dValue - 273.15;
 }
 
 /// <summary>
@@ -77,5 +77,5 @@ inline DOUBLE TcKTOC(DOUBLE dValue)
 /// <returns></returns>
 inline DOUBLE TcKTOF(DOUBLE dValue)
 {
-	return 0;
+	return (dValue - 273.15) * (9.0 / 5.0) + 32;
 }
