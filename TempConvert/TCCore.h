@@ -1,13 +1,6 @@
 #pragma once
 #include <Windows.h>
 
-typedef struct
-{
-	WCHAR Name[32];
-	DOUBLE BoilingPoint;
-	DOUBLE FreezingPoint;
-} TempUnit;
-
 inline void TcSetComboBoxDropdownHeight(HWND hComboBox, int dropdownHeight) {
 	RECT rect;
 	GetWindowRect(hComboBox, &rect);
