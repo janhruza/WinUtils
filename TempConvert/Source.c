@@ -187,10 +187,6 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_INITDIALOG:
 		{
 			EnableThemeDialogTexture(hDlg, ETDT_ENABLE);
-			// set visual styles
-			// set DWM status
-			/*DWMNCRENDERINGPOLICY dwmValue = DWMNCRP_DISABLED;
-			DwmSetWindowAttribute(hDlg, DWMWA_NCRENDERING_POLICY, &dwmValue, sizeof(DWMNCRENDERINGPOLICY));*/
 
 			// get all control handles
 			hWindow = hDlg;
