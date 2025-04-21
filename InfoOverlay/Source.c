@@ -5,10 +5,13 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 {
 	switch (message)
 	{
-		case WM_INITDIALOG:
-			hCbxWindow = GetDlgItem(hDlg, IDC_CBX_WINDOW);
-			hTxtOverlay = GetDlgItem(hDlg, IDC_TXT_OVERLAY);
-			return TRUE;
+	case WM_INITDIALOG:
+	{
+		hCbxWindow = GetDlgItem(hDlg, IDC_CBX_WINDOW);
+		hTxtOverlay = GetDlgItem(hDlg, IDC_TXT_OVERLAY);
+		EnumAllWindows();
+		return TRUE;
+	}
 
 		case WM_COMMAND:
 		{
