@@ -38,7 +38,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpszC
 	}
 
 	// create main window
-	HWND hWnd = CreateWindowEx(WS_EX_APPWINDOW,
+	HWND hWnd = CreateWindowEx(NULL,
 		OP_CLASS_NAME,
 		OP_WINDOW_TITLE,
 		WS_OVERLAPPEDWINDOW,
