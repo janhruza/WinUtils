@@ -16,6 +16,7 @@ Global
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
+		Description = Contains various Window OS related tools and utilities.
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{1903D2BC-FD69-426C-8AD0-9954CF15503D}.Debug|x64.ActiveCfg = Debug|x64
