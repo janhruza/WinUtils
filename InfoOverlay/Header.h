@@ -2,6 +2,10 @@
 #include "resource.h"
 #include <stdio.h>
 #include <Windows.h>
+#include <CommCtrl.h>
+#include <dwmapi.h>
+#pragma comment(lib, "dwmapi.lib")
+#include "List.h"
 
 #pragma comment(linker,"\"/manifestdependency:type='win32' \
 name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
@@ -10,52 +14,68 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 // definitions
 static HWND hCbxWindow;
 static HWND hTxtOverlay;
+static HINSTANCE hCurrentInstance;
 
 static BOOL SetOverlayText(_In_ HWND hWnd, _In_ LPWSTR lpszText)
 {
-	if (!hWnd)
+	// check for storage space
+	int idx = ListGetFreeIndex();
+	if (idx == LIST_INVALID)
 	{
+		// can't store window
+		// all save slots are full
 		return FALSE;
 	}
 
-	if (IsWindowVisible(hWnd) == FALSE)
-	{
-		return FALSE;
-	}
+	WCHAR wClassName[MAX_CLASS_NAME];
+	GetClassName(hWnd, wClassName, MAX_CLASS_NAME);
 
-	// get client rect
 	RECT rect;
 	GetClientRect(hWnd, &rect);
 
-	// draw text
-	HDC hdc = GetDC(hWnd);
-	DrawText(hdc, lpszText, lstrlen(lpszText), &rect, DT_RIGHT | DT_TOP);
-	ReleaseDC(hWnd, hdc);
+	int width = rect.right - rect.left;
+	int height = rect.bottom - rect.top;
 
-	return TRUE;
+	// create overlay window
+	HWND hOverlay = CreateWindowEx(
+		WS_EX_TOPMOST | WS_EX_TRANSPARENT, // Extended window styles
+		WC_STATIC,						// Window class
+		lpszText,						// Window name
+		WS_VISIBLE | WS_CHILD,			// Window style (no borders)
+		rect.left,						// X position
+		rect.top,						// Y position
+		width,							// Width
+		height,							// Height
+		hWnd,							// Parent window
+		NULL,							// Menu
+		hCurrentInstance,				// Instance handle
+		NULL							// Additional application data
+	);
+
+	// save window and the overlay
+	return ListSetItem(idx, hWnd, hOverlay);
 }
 
 static BOOL UnsetOverlayText(_In_ HWND hWnd)
 {
-	if (!hWnd)
+	// retrieve index for window and its overlay window
+	int idx = ListGetIndex(hWnd);
+	if (idx == LIST_INVALID)
 	{
+		// can't unset text
+		// window not found
 		return FALSE;
 	}
 
-	if (IsWindowVisible(hWnd) == FALSE)
-	{
-		return FALSE;
-	}
+	// destroy overlay window
+	HWND hOverlay = ListGetOverlay(idx);
+	if (hOverlay == LIST_NULL) return FALSE;
 
-	// get client
-	RECT rect;
-	GetClientRect(hWnd, &rect);
+	// destroy overlay window
+	DestroyWindow(hOverlay);
 
-	// remove text
-	HDC hdc = GetDC(hWnd);
-	FillRect(hdc, &rect, (HBRUSH)(COLOR_BACKGROUND + 1));
-	ReleaseDC(hWnd, hdc);
-	return TRUE;
+	// free handles from lists
+	return ListSetItem(idx, NULL, NULL);
 }
 
 BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam)

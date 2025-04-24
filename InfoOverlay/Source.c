@@ -1,12 +1,17 @@
 #pragma once
 #include "Header.h"
 
+static HBRUSH hBrush;
+
 INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
 	case WM_INITDIALOG:
 	{
+		COLORREF color = RGB(0xFF, 0xFF, 0xFF);
+		hBrush = CreateSolidBrush(color);
+		DwmSetWindowAttribute(hDlg, DWMWA_CAPTION_COLOR, &color, sizeof(COLORREF));
 		hCbxWindow = GetDlgItem(hDlg, IDC_CBX_WINDOW);
 		hTxtOverlay = GetDlgItem(hDlg, IDC_TXT_OVERLAY);
 		EnumAllWindows();
@@ -54,7 +59,17 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 			return FALSE;
 		}
 
+		case WM_CTLCOLORDLG:
+			return (INT_PTR)hBrush;
+
+		case WM_CTLCOLORBTN:
+		case WM_CTLCOLORSTATIC:
+			HDC hdc = GetDC(hDlg);
+			SetBkColor(hdc, TRANSPARENT);
+			return hBrush;
+
 		case WM_CLOSE:
+			DeleteObject(hBrush);
 			EndDialog(hDlg, IDCLOSE);
 			return TRUE;
 		}
@@ -65,6 +80,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpszCommandLine, int nCmdShow)
 {
 	// main entry point
+	hCurrentInstance = hInstance;
 	DialogBox(hInstance, MAKEINTRESOURCE(IDD_MAIN_DIALOG), NULL, DialogProc);
 	return 0;
 }
