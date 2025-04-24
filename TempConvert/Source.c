@@ -26,6 +26,7 @@ HWND hCbxTempFrom;
 HWND hCbxTempTo;
 HWND hTxtResult;
 HWND hTxtValue;
+HBRUSH hBrush;
 
 inline static void EnableVisualStyles()
 {
@@ -186,6 +187,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_INITDIALOG:
 		{
+			hBrush = CreateSolidBrush(RGB(0xFF, 0xFF, 0xFF));
 			EnableThemeDialogTexture(hDlg, ETDT_ENABLE);
 
 			// get all control handles
@@ -247,6 +249,10 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 			return FALSE;
 		}
 
+		case WM_DESTROY:
+			DeleteObject(hBrush);
+			return FALSE;
+
 		case WM_SYSCOMMAND:
 		{
 			switch (LOWORD(wParam))
@@ -257,6 +263,15 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 			return FALSE;
 		}
+
+		case WM_CTLCOLORDLG:
+			return (INT_PTR)hBrush;
+
+		case WM_CTLCOLORSTATIC:
+		case WM_CTLCOLORBTN:
+			HDC hdc = GetDC(hDlg);
+			SetBkMode(hdc, hBrush);
+			return TRUE;
 
 		default:
 		{
