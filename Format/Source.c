@@ -25,7 +25,11 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 
         // get controls
         hCbxDrives = GetDlgItem(hDlg, IDC_CBX_DRIVE);
+        hCbxFileSystems = GetDlgItem(hDlg, IDC_CBX_FILESYSTEM);
+        hCbxAllocSizes = GetDlgItem(hDlg, IDC_CBX_ALLOC_SIZE);
         FmtRefreshDrives(hCbxDrives);
+        FmtRefreshFilesystems(hCbxFileSystems);
+        FmtRefreshAllocSizes(hCbxAllocSizes);
 
         break;
 

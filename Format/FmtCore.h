@@ -10,6 +10,7 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 // definitions
 #define FMT_FILE_PATH   L"C:\\WINDOWS\\System32\\format.exe"
 #define FMT_BUFFER_SIZE 4096
+#define FMT_MSG_WARNIG  L"Formatting this drive will erase all data on it. This action cannot be undone. Are you sure you want to proceed? Click Yes to continue, or No / Cancel to cancel the operation."
 
 // filesystems definitions
 #define FMT_FS_REFS     L"ReFS"
@@ -24,6 +25,10 @@ HWND hDialog;
 HBRUSH hbrBackground;
 COLORREF hBg;
 HWND hCbxDrives;
+HWND hCbxFileSystems;
+HWND hCbxAllocSizes;
+
+DWORD dwAllocSizes[] = { 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536 };
 
 typedef struct tagFormatOptions
 {
@@ -70,7 +75,7 @@ typedef struct tagFormatOptions
     /// <summary>
     /// Allocation unit size in bytes.
     /// </summary>
-    DWORD dwSize;
+    DWORD dwAllocSize;
 
 } FormatOptions;
 
@@ -78,6 +83,13 @@ FormatOptions sOptions;
 
 inline BOOL FmtBeginFormat(FormatOptions* sOptions)
 {
+    if (MessageBox(hDialog, FMT_MSG_WARNIG, L"Warning", MB_YESNOCANCEL | MB_ICONWARNING) != IDYES)
+    {
+        // IDCANCEL or IDNO happened
+        // cancel formatting
+        return FALSE;
+    }
+
 	return TRUE;
 }
 
@@ -140,6 +152,8 @@ inline DWORD FmtCreateProcess(LPWSTR lpszApp, LPWSTR lpszCmdLine, BOOL bWait)
 
 inline void FmtRefreshDrives(HWND hCbx)
 {
+    if (!hCbx) return;
+
     if (GetLogicalDrives() == 0)
     {
         // no drives
@@ -152,6 +166,8 @@ inline void FmtRefreshDrives(HWND hCbx)
         // buffer too small
         return;
     }
+
+    SendMessage(hCbx, CB_RESETCONTENT, 0, 0);
 
     WCHAR* drive = pDrives;
     while (*drive)
@@ -189,4 +205,44 @@ inline void FmtRefreshDrives(HWND hCbx)
     }
 
     return;
+}
+
+inline void FmtRefreshFilesystems(HWND hCbx)
+{
+    if (!hCbx) return;
+    SendMessage(hCbx, CB_RESETCONTENT, 0, 0);
+    SendMessage(hCbx, CB_ADDSTRING, 0, FMT_FS_EXFAT);
+    SendMessage(hCbx, CB_ADDSTRING, 0, FMT_FS_FAT);
+    SendMessage(hCbx, CB_ADDSTRING, 0, FMT_FS_FAT32);
+    SendMessage(hCbx, CB_ADDSTRING, 0, FMT_FS_NTFS);
+    SendMessage(hCbx, CB_ADDSTRING, 0, FMT_FS_REFS);
+    SendMessage(hCbx, CB_ADDSTRING, 0, FMT_FS_UDF);
+    SendMessage(hCbx, CB_SETCURSEL, 0, 0);
+    return;
+}
+
+inline void FmtRefreshAllocSizes(HWND hCbx)
+{
+    if (!hCbx) return;
+    SendMessage(hCbx, CB_RESETCONTENT, 0, 0);
+
+    for (int x = 0; x < ARRAYSIZE(dwAllocSizes); x++)
+    {
+        DWORD dwValue = dwAllocSizes[x];
+        WCHAR buf[10];
+        swprintf_s(buf, 10, L"%d\0", dwValue);
+        SendMessage(hCbx, CB_ADDSTRING, 0, buf);
+    }
+
+    SendMessage(hCbx, CB_SETCURSEL, 0, 0);
+    return;
+}
+
+inline BOOL FmtValidate(FormatOptions* options)
+{
+    if (!options) return FALSE;
+    if (!options->wVolume) return FALSE;
+    if (options->dwAllocSize < 512) return FALSE;
+    if (!options->wFilesystem) return FALSE;
+    return TRUE;
 }
