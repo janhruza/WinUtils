@@ -16,6 +16,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SysTime", "SysTime\SysTime.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CodeSender", "CodeSender\CodeSender.vcxproj", "{FFE0406F-60FE-4548-8A87-1C112F44B630}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Format", "Format\Format.vcxproj", "{2326501C-AD2F-41CA-B96A-8567FD4C9F15}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{FFE0406F-60FE-4548-8A87-1C112F44B630}.Release|x64.Build.0 = Release|x64
 		{FFE0406F-60FE-4548-8A87-1C112F44B630}.Release|x86.ActiveCfg = Release|Win32
 		{FFE0406F-60FE-4548-8A87-1C112F44B630}.Release|x86.Build.0 = Release|Win32
+		{2326501C-AD2F-41CA-B96A-8567FD4C9F15}.Debug|x64.ActiveCfg = Debug|x64
+		{2326501C-AD2F-41CA-B96A-8567FD4C9F15}.Debug|x64.Build.0 = Debug|x64
+		{2326501C-AD2F-41CA-B96A-8567FD4C9F15}.Debug|x86.ActiveCfg = Debug|Win32
+		{2326501C-AD2F-41CA-B96A-8567FD4C9F15}.Debug|x86.Build.0 = Debug|Win32
+		{2326501C-AD2F-41CA-B96A-8567FD4C9F15}.Release|x64.ActiveCfg = Release|x64
+		{2326501C-AD2F-41CA-B96A-8567FD4C9F15}.Release|x64.Build.0 = Release|x64
+		{2326501C-AD2F-41CA-B96A-8567FD4C9F15}.Release|x86.ActiveCfg = Release|Win32
+		{2326501C-AD2F-41CA-B96A-8567FD4C9F15}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
