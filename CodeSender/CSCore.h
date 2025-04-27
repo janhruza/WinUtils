@@ -6,6 +6,9 @@
 name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
 processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
+#define ID_ITEM_REFRESH 0x1100
+#define ID_ITEM_EXIT    0x1001    
+
 typedef struct TargetWindow
 {
 	HWND hWnd;

@@ -5,6 +5,7 @@ COLORREF hBg;
 HBRUSH hbrBackground;
 TargetWindow hwTarget;
 HWND hDialog;
+HMENU hPopupMenu;
 
 // dialog controls
 HWND hCbxWindows;
@@ -14,6 +15,17 @@ HWND hTxtInput;
 inline BOOL RefreshWindowList(void);
 inline void SendKeys(TargetWindow*);
 
+inline HMENU CreateAppMenu()
+{
+	HMENU hMenu = CreatePopupMenu();
+
+	AppendMenu(hMenu, MF_STRING, ID_ITEM_REFRESH, L"Refresh\tF5");
+	AppendMenu(hMenu, MF_SEPARATOR, 0, L"Refresh\tF5");
+	AppendMenu(hMenu, MF_STRING, ID_ITEM_EXIT, L"Close\tAlt+F4");
+
+	return hMenu;
+}
+
 INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -22,6 +34,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 
 		// get dialog window
 		hDialog = hDlg;
+		hPopupMenu = CreateAppMenu();
 
 		// get colors
 		hBg = RGB(255, 255, 255);
@@ -51,6 +64,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 			// cancel button
+			case ID_ITEM_EXIT:
 			case IDC_BTN_CANCEL:
 				SendMessage(hDlg, WM_CLOSE, 0, 0);
 				break;
@@ -88,6 +102,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 
 			// refresh windows list
+			case ID_ITEM_REFRESH:
 			case IDC_BTN_REFRESH:
 				RefreshWindowList();
 				break;
@@ -100,6 +115,31 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_CLOSE:
 		EndDialog(hDlg, IDCLOSE);
 		return TRUE;
+
+	case WM_RBUTTONDOWN:
+	{
+		// show context menu
+		if (!hPopupMenu) break;
+
+		POINT pt;
+		GetCursorPos(&pt);
+		TrackPopupMenu(hPopupMenu, TPM_LEFTALIGN, pt.x, pt.y, 0, hDialog, NULL);
+	}
+	break;
+
+	case WM_KEYDOWN:
+	{
+		int key = (int)wParam;
+		switch (key)
+		{
+		case VK_F5:
+			RefreshWindowList();
+			break;
+
+		break;
+		}
+	}
+	break;
 
 	default:
 		return FALSE;
