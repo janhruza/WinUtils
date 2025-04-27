@@ -12,6 +12,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OldPad", "OldPad\OldPad.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InfoOverlay", "InfoOverlay\InfoOverlay.vcxproj", "{4BEA1E13-0E05-468B-A311-2030B1679C44}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SysTime", "SysTime\SysTime.vcxproj", "{D2F3C6A5-89AF-4803-B92F-B0E29A30A262}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -61,6 +63,14 @@ Global
 		{4BEA1E13-0E05-468B-A311-2030B1679C44}.Release|x64.Build.0 = Release|x64
 		{4BEA1E13-0E05-468B-A311-2030B1679C44}.Release|x86.ActiveCfg = Release|Win32
 		{4BEA1E13-0E05-468B-A311-2030B1679C44}.Release|x86.Build.0 = Release|Win32
+		{D2F3C6A5-89AF-4803-B92F-B0E29A30A262}.Debug|x64.ActiveCfg = Debug|x64
+		{D2F3C6A5-89AF-4803-B92F-B0E29A30A262}.Debug|x64.Build.0 = Debug|x64
+		{D2F3C6A5-89AF-4803-B92F-B0E29A30A262}.Debug|x86.ActiveCfg = Debug|Win32
+		{D2F3C6A5-89AF-4803-B92F-B0E29A30A262}.Debug|x86.Build.0 = Debug|Win32
+		{D2F3C6A5-89AF-4803-B92F-B0E29A30A262}.Release|x64.ActiveCfg = Release|x64
+		{D2F3C6A5-89AF-4803-B92F-B0E29A30A262}.Release|x64.Build.0 = Release|x64
+		{D2F3C6A5-89AF-4803-B92F-B0E29A30A262}.Release|x86.ActiveCfg = Release|Win32
+		{D2F3C6A5-89AF-4803-B92F-B0E29A30A262}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
