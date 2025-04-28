@@ -8,10 +8,10 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdL
     hBg = RGB(0xFF, 0xFF, 0xFF);
     hbrBackground = CreateSolidBrush(hBg);
 
-    //AllocConsole();
-    SetConsoleTitle(L"Format Console");
+    AllocConsole();
+    SetConsoleTitle(FMT_CONSOLE_TITLE);
+    FmtCreateProcess(L"C:\\WINDOWS\\System32\\cmd.exe", NULL, FALSE);
     DialogBox(hInstance, MAKEINTRESOURCE(IDD_FORMVIEW), NULL, DialogProc);
-
 }
 
 INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)

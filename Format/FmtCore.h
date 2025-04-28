@@ -8,9 +8,10 @@ name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
 processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 // definitions
-#define FMT_FILE_PATH   L"C:\\WINDOWS\\System32\\format.exe"
-#define FMT_BUFFER_SIZE 4096
-#define FMT_MSG_WARNIG  L"Formatting this drive will erase all data on it. This action cannot be undone. Are you sure you want to proceed? Click Yes to continue, or No / Cancel to cancel the operation."
+#define FMT_FILE_PATH       L"C:\\WINDOWS\\System32\\format.exe"
+#define FMT_BUFFER_SIZE     4096
+#define FMT_MSG_WARNIG      L"Formatting this drive will erase all data on it. This action cannot be undone. Are you sure you want to proceed? Click Yes to continue, or No / Cancel to cancel the operation."
+#define FMT_CONSOLE_TITLE   L"Format Console"
 
 // filesystems definitions
 #define FMT_FS_REFS     L"ReFS"
