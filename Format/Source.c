@@ -1,6 +1,8 @@
 #pragma once
 #include "FmtCore.h"
 
+#define ID_ABOUT_FORMAT 0xAB00
+
 INT_PTR CALLBACK DialogProc(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR pCmdLine, int nCmdShow)
@@ -23,6 +25,10 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 
         // get dialog
         hDialog = hDlg;
+
+        HMENU hSystemMenu = GetSystemMenu(hDlg, FALSE);
+        AppendMenu(hSystemMenu, MF_SEPARATOR, 0, NULL);
+        AppendMenu(hSystemMenu, MF_STRING, ID_ABOUT_FORMAT, L"About Format\tF1");
 
         // get controls
         hCbxDrives = GetDlgItem(hDlg, IDC_CBX_DRIVE);
@@ -74,6 +80,16 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
         }
     }
     break;
+
+    case WM_SYSCOMMAND:
+        switch (wParam)
+        {
+        case ID_ABOUT_FORMAT:
+            // about format dialog
+            FmtAboutDialog(hDlg);
+            break;
+        }
+        break;
 
     case WM_CLOSE:
         EndDialog(hDlg, IDCLOSE);

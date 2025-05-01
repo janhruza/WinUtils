@@ -246,3 +246,12 @@ inline BOOL FmtValidate(FormatOptions* options)
     if (!options->wFilesystem) return FALSE;
     return TRUE;
 }
+
+inline BOOL FmtAboutDialog(HWND hParent)
+{
+    HINSTANCE hInst = GetModuleHandle(NULL);
+    WCHAR wText[10000];
+    LoadString(hInst, IDS_ABOUT_FORMAT, wText, 10000);
+    MessageBox(hParent, wText, L"About Format", MB_OK | MB_ICONINFORMATION);
+    return TRUE;
+}
