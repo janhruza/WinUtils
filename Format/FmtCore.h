@@ -22,14 +22,13 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #define FMT_FS_UDF      L"UDF"
 
 // member definitions
-HWND hDialog;
-HBRUSH hbrBackground;
-COLORREF hBg;
-HWND hCbxDrives;
-HWND hCbxFileSystems;
-HWND hCbxAllocSizes;
-
-DWORD dwAllocSizes[] = { 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536 };
+static HWND hDialog;
+static HBRUSH hbrBackground;
+static COLORREF hBg;
+static HWND hCbxDrives;
+static HWND hCbxFileSystems;
+static HWND hCbxAllocSizes;
+static DWORD dwAllocSizes[] = { 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536,  65536 * 2 };
 
 typedef struct tagFormatOptions
 {
