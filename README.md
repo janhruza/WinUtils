@@ -9,7 +9,7 @@ All projects are targeting the Windows operating system, effectively using the W
 WinUtils solution is licensed under the MIT license.
 
 ## Prerequisites
-WinUtils is being developed using Microsoft Visual Studio IDE. You can get it [here](https://visualstudio.microsoft.com/).
+WinUtils is being developed using the Microsoft Visual Studio IDE. You can get it [here](https://visualstudio.microsoft.com/).
 
 ## List of projects
 Here is a table with all projects and their descriptions.
