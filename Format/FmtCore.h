@@ -29,6 +29,7 @@ static HWND hCbxDrives;
 static HWND hCbxFileSystems;
 static HWND hCbxAllocSizes;
 static DWORD dwAllocSizes[] = { 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536,  65536 * 2 };
+static HMENU hPopupMenu;
 
 typedef struct tagFormatOptions
 {
@@ -80,6 +81,18 @@ typedef struct tagFormatOptions
 } FormatOptions;
 
 FormatOptions sOptions;
+
+inline void FmtCleanup(void)
+{
+    DeleteObject(hbrBackground);
+    hbrBackground = NULL;
+    hDialog = NULL;
+    hCbxDrives = NULL;
+    hCbxFileSystems = NULL;
+    hCbxAllocSizes = NULL;
+    hPopupMenu = NULL;
+    return;
+}
 
 inline BOOL FmtBeginFormat(FormatOptions* sOptions)
 {
@@ -150,21 +163,21 @@ inline DWORD FmtCreateProcess(LPWSTR lpszApp, LPWSTR lpszCmdLine, BOOL bWait)
     }
 }
 
-inline void FmtRefreshDrives(HWND hCbx)
+inline BOOL FmtRefreshDrives(HWND hCbx)
 {
-    if (!hCbx) return;
+    if (!hCbx) return FALSE;
 
     if (GetLogicalDrives() == 0)
     {
         // no drives
-        return;
+        return FALSE;
     }
 
     WCHAR pDrives[FMT_BUFFER_SIZE];
     if (GetLogicalDriveStrings(FMT_BUFFER_SIZE, pDrives) > FMT_BUFFER_SIZE)
     {
         // buffer too small
-        return;
+        return FALSE;
     }
 
     SendMessage(hCbx, CB_RESETCONTENT, 0, 0);
@@ -204,12 +217,12 @@ inline void FmtRefreshDrives(HWND hCbx)
         SendMessage(hCbx, CB_SETCURSEL, 0, 0);
     }
 
-    return;
+    return TRUE;
 }
 
-inline void FmtRefreshFilesystems(HWND hCbx)
+inline BOOL FmtRefreshFilesystems(HWND hCbx)
 {
-    if (!hCbx) return;
+    if (!hCbx) return FALSE;
     SendMessage(hCbx, CB_RESETCONTENT, 0, 0);
     SendMessage(hCbx, CB_ADDSTRING, 0, FMT_FS_EXFAT);
     SendMessage(hCbx, CB_ADDSTRING, 0, FMT_FS_FAT);
@@ -218,12 +231,12 @@ inline void FmtRefreshFilesystems(HWND hCbx)
     SendMessage(hCbx, CB_ADDSTRING, 0, FMT_FS_REFS);
     SendMessage(hCbx, CB_ADDSTRING, 0, FMT_FS_UDF);
     SendMessage(hCbx, CB_SETCURSEL, 0, 0);
-    return;
+    return TRUE;
 }
 
-inline void FmtRefreshAllocSizes(HWND hCbx)
+inline BOOL FmtRefreshAllocSizes(HWND hCbx)
 {
-    if (!hCbx) return;
+    if (!hCbx) return FALSE;
     SendMessage(hCbx, CB_RESETCONTENT, 0, 0);
 
     for (int x = 0; x < ARRAYSIZE(dwAllocSizes); x++)
@@ -235,7 +248,7 @@ inline void FmtRefreshAllocSizes(HWND hCbx)
     }
 
     SendMessage(hCbx, CB_SETCURSEL, 0, 0);
-    return;
+    return TRUE;
 }
 
 inline BOOL FmtValidate(FormatOptions* options)
@@ -253,5 +266,28 @@ inline BOOL FmtAboutDialog(HWND hParent)
     WCHAR wText[10000];
     LoadString(hInst, IDS_ABOUT_FORMAT, wText, 10000);
     MessageBox(hParent, wText, L"About Format", MB_OK | MB_ICONINFORMATION);
+    return TRUE;
+}
+
+inline BOOL FmtRefreshAll()
+{
+	if (FmtRefreshDrives(hCbxDrives) == FALSE)
+	{
+		MessageBox(hDialog, L"Could not refresh drives.", L"Error", MB_OK | MB_ICONERROR);
+		return FALSE;
+	}
+
+	if (FmtRefreshFilesystems(hCbxFileSystems) == FALSE)
+	{
+		MessageBox(hDialog, L"Could not refresh filesystems.", L"Error", MB_OK | MB_ICONERROR);
+		return FALSE;
+	}
+
+	if (FmtRefreshAllocSizes(hCbxAllocSizes) == FALSE)
+	{
+		MessageBox(hDialog, L"Could not refresh allocation sizes.", L"Error", MB_OK | MB_ICONERROR);
+		return FALSE;
+	}
+
     return TRUE;
 }

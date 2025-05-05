@@ -2,6 +2,7 @@
 #include "FmtCore.h"
 
 #define ID_ABOUT_FORMAT 0xAB00
+#define ID_REFRESH_UI   0xAB01
 
 INT_PTR CALLBACK DialogProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -30,13 +31,15 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
         AppendMenu(hSystemMenu, MF_SEPARATOR, 0, NULL);
         AppendMenu(hSystemMenu, MF_STRING, ID_ABOUT_FORMAT, L"About Format\tF1");
 
+		hPopupMenu = CreatePopupMenu();
+		AppendMenu(hPopupMenu, MF_STRING, ID_ABOUT_FORMAT, L"About Format\tF1");
+		AppendMenu(hPopupMenu, MF_STRING, ID_REFRESH_UI, L"Refresh UI\tF5");
+
         // get controls
         hCbxDrives = GetDlgItem(hDlg, IDC_CBX_DRIVE);
         hCbxFileSystems = GetDlgItem(hDlg, IDC_CBX_FILESYSTEM);
         hCbxAllocSizes = GetDlgItem(hDlg, IDC_CBX_ALLOC_SIZE);
-        FmtRefreshDrives(hCbxDrives);
-        FmtRefreshFilesystems(hCbxFileSystems);
-        FmtRefreshAllocSizes(hCbxAllocSizes);
+        FmtRefreshAll();
 
         break;
 
@@ -60,6 +63,16 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
             EndDialog(hDialog, IDCLOSE);
             return TRUE;
 
+        case ID_ABOUT_FORMAT:
+            // about format dialog
+            FmtAboutDialog(hDlg);
+            break;
+
+        case ID_REFRESH_UI:
+            // refresh UI
+            FmtRefreshAll();
+            break;
+
         case IDC_CBX_DRIVE:
         {
             switch (HIWORD(wParam))
@@ -76,6 +89,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
             break;
             }
         }
+
         return TRUE;
         }
     }
@@ -84,16 +98,49 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
     case WM_SYSCOMMAND:
         switch (wParam)
         {
-        case ID_ABOUT_FORMAT:
-            // about format dialog
-            FmtAboutDialog(hDlg);
-            break;
+            case ID_ABOUT_FORMAT:
+                // about format dialog
+                FmtAboutDialog(hDlg);
+                break;
+
+            case ID_REFRESH_UI:
+                // refresh UI
+                FmtRefreshAll();
+                break;
         }
         break;
 
     case WM_CLOSE:
         EndDialog(hDlg, IDCLOSE);
         return TRUE;
+
+    case WM_RBUTTONDOWN:
+	{
+		POINT pt;
+		GetCursorPos(&pt);
+		TrackPopupMenu(hPopupMenu, TPM_RIGHTBUTTON, pt.x, pt.y, 0, hDlg, NULL);
+	}
+	break;
+
+	case WM_KEYDOWN:
+		switch (wParam)
+		{
+		case VK_F5:
+			// refresh UI
+			FmtRefreshAll();
+			break;
+		case VK_F1:
+			// about format dialog
+			FmtAboutDialog(hDlg);
+			break;
+		default:
+			break;
+		}
+		break;
+
+	case WM_DESTROY:
+		FmtCleanup();
+		break;
 
     default:
         return FALSE;
