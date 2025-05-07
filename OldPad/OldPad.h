@@ -33,6 +33,11 @@ static HWND hWindow;
 /// </summary>
 static HWND hEdit;
 
+/// <summary>
+/// Default font for the edit control.
+/// </summary>
+static HFONT hDefaultFont;
+
 inline void OpShowMessage(LPWSTR message)
 {
 	MessageBox(hWindow, message, OP_WINDOW_TITLE, MB_OK | MB_ICONINFORMATION);

@@ -65,7 +65,9 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpszC
 	GetClientRect(hWnd, &rect);
 
 	// create text edit
-	hEdit = CreateWindow(WC_EDIT, L"", WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL | WS_VSCROLL, 0, 0, rect.right, rect.bottom, hWnd, NULL, hInstance, NULL);
+	hEdit = CreateWindow(WC_EDIT, NULL, WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL | WS_VSCROLL, 0, 0, rect.right, rect.bottom, hWnd, NULL, hInstance, NULL);
+	hDefaultFont = CreateFont(20, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_QUALITY, L"Consolas");
+	SendMessage(hEdit, WM_SETFONT, (WPARAM)hDefaultFont, TRUE);
 
 	// show window
 	ShowWindow(hWnd, nCmdShow);

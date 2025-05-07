@@ -6,21 +6,21 @@
 #include <iostream>
 #include <Windows.h>
 
-bool InjectDLL(DWORD processID, const char* dllPath) {
+bool InjectDLL(DWORD processID, LPWSTR dllPath) {
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
 	if (!hProcess) {
 		std::cerr << "Failed to open target process." << std::endl;
 		return false;
 	}
 
-	LPVOID pDllPath = VirtualAllocEx(hProcess, 0, strlen(dllPath) + 1, MEM_COMMIT, PAGE_READWRITE);
+	LPVOID pDllPath = VirtualAllocEx(hProcess, 0, wcslen(dllPath) + 1, MEM_COMMIT, PAGE_READWRITE);
 	if (!pDllPath) {
 		std::cerr << "Failed to allocate memory in target process." << std::endl;
 		CloseHandle(hProcess);
 		return false;
 	}
 
-	if (!WriteProcessMemory(hProcess, pDllPath, (LPVOID)dllPath, strlen(dllPath) + 1, 0)) {
+	if (!WriteProcessMemory(hProcess, pDllPath, (LPVOID)dllPath, wcslen(dllPath) + 1, 0)) {
 		std::cerr << "Failed to write DLL path to target process memory." << std::endl;
 		VirtualFreeEx(hProcess, pDllPath, 0, MEM_RELEASE);
 		CloseHandle(hProcess);
@@ -47,16 +47,16 @@ bool InjectDLL(DWORD processID, const char* dllPath) {
 }
 
 
-HRESULT InjectProcess(const char* application, const char* library)
+HRESULT InjectProcess(LPWSTR application, LPWSTR library)
 {
 	// start new process, get its PID and inject DLL
-	STARTUPINFOA si;
+	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
 
 	ZeroMemory(&si, sizeof(si));
 	ZeroMemory(&pi, sizeof(pi));
 
-	if (CreateProcessA(application, NULL, NULL, NULL, FALSE, NULL, NULL, NULL, &si, &pi) == NULL)
+	if (CreateProcess(application, NULL, NULL, NULL, FALSE, NULL, NULL, NULL, &si, &pi) == NULL)
 	{
 		CloseHandle(pi.hProcess);
 		CloseHandle(pi.hThread);
@@ -74,11 +74,11 @@ HRESULT InjectProcess(const char* application, const char* library)
 	return value == true ? S_OK : E_FAIL;
 }
 
-int main(int argc, const char* argv[])
+int wmain(int argc, const LPWSTR argv[])
 {
 	if (argc != 3)
 	{
-		std::cerr << "Invalid number of arguments passed.\nUsage: LibInject.exe [exePath] [dllPath]" << std::endl;
+		std::wcerr << L"Invalid number of arguments passed.\nUsage: LibInject.exe [exePath] [dllPath]" << std::endl;
 		return EXIT_FAILURE;
 	}
 
