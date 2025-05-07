@@ -50,11 +50,13 @@ inline LPWSTR OpGetLicenseText()
 	return OP_LICENSE_PART_0 "\n\n" OP_LICENSE_PART_1 "\n\n" OP_LICENSE_PART_2 "\n\n" OP_LICENSE_PART_3;
 }
 
+HBRUSH hBg;
 INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
 	case WM_INITDIALOG:
+		hBg = CreateSolidBrush(GetSysColor(COLOR_WINDOW));
 		HWND hStatic = GetDlgItem(hDlg, IDC_LICENSE_TEXT);
 		SetWindowText(hStatic, OpGetLicenseText());
 		return TRUE;
@@ -62,6 +64,15 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_CLOSE:
 		EndDialog(hDlg, IDOK);
 		return TRUE;
+
+	case WM_CTLCOLORDLG:
+		return (INT_PTR)hBg;
+
+	case WM_CTLCOLORBTN:
+	case WM_CTLCOLORSTATIC:
+	{
+		return (INT_PTR)hBg;
+	}
 
 	case WM_COMMAND:
 		switch (wParam)
