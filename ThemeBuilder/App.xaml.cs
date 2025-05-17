@@ -2,10 +2,8 @@
 using System.Windows.Media;
 
 // custom definitions
-using ColorTheme = System.Collections.Generic.Dictionary<string, System.Windows.Media.Color>;
-using CursorTheme = System.Collections.Generic.Dictionary<string, string>;
-using DesktopTheme = System.Collections.Generic.Dictionary<string, string>;
-using VisualStylesTheme = System.Collections.Generic.Dictionary<string, string>;
+using ColorTheme = System.Collections.Generic.Dictionary<string, System.Windows.Media.Color>;   // Color theme data
+using ThemeDict = System.Collections.Generic.Dictionary<string, string>;                        // Generic theme dictionary
 
 namespace ThemeBuilder
 {
@@ -21,9 +19,25 @@ namespace ThemeBuilder
             mw.Show();
         }
 
+        /// <summary>
+        /// Generates a theme file based on the provided theme components.
+        /// </summary>
+        /// <param name="tColors">Color data.</param>
+        /// <param name="tCursors">Cursor data.</param>
+        /// <param name="tDesktop">Desktop data.</param>
+        /// <param name="tVisualStyles">Visual styles data.</param>
+        /// <returns><see langword="true"/> if theme is generated, otherwise <see langword="false"/>.</returns>
         public static bool GenerateThemeFile(ColorTheme tColors,
-                                             CursorTheme tCursors)
+                                             ThemeDict tCursors,
+                                             ThemeDict tDesktop,
+                                             ThemeDict tVisualStyles)
         {
+            // add master theme sector
+            // add theme colors
+            // add theme cursors
+            // add theme desktop settings
+            // add theme visual styles settings
+            // add other theme data
             return true;
         }
 
@@ -100,9 +114,9 @@ namespace ThemeBuilder
             };
         }
 
-        internal static CursorTheme CreateThemeCursors()
+        internal static ThemeDict CreateThemeCursors()
         {
-            return new CursorTheme
+            return new ThemeDict
             {
                 { "AppStarting", "" },
                 { "Arrow", "" },
@@ -121,9 +135,9 @@ namespace ThemeBuilder
             };
         }
 
-        internal static DesktopTheme CreateThemeDesktop()
+        internal static ThemeDict CreateThemeDesktop()
         {
-            return new DesktopTheme
+            return new ThemeDict
             {
                 { "Wallpaper", "" },
                 { "Pattern", "" },
@@ -133,9 +147,9 @@ namespace ThemeBuilder
             };
         }
 
-        internal static VisualStylesTheme CreateVisualStylesTheme()
+        internal static ThemeDict CreateVisualStylesTheme()
         {
-            return new VisualStylesTheme
+            return new ThemeDict
             {
                 { "Path", "%SystemRoot%\\resources\\themes\\Aero\\Aero.msstyles" },
                 { "ColorStyle", "NormalColor" },
