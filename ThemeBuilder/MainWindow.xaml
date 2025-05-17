@@ -34,9 +34,14 @@
                     HorizontalAlignment="Right"
                     Margin="10,0,10,10">
 
-            <Button Content="Close"/>
+            <Button Content="Close"
+                    Name="btnClose"
+                    Click="btnClose_Click"/>
+            
             <Button Content="Create"
-                    Margin="5,0,0,0"/>
+                    Margin="5,0,0,0"
+                    Name="btnCreate"
+                    Click="btnCreate_Click"/>
 
         </StackPanel>
     </Grid>

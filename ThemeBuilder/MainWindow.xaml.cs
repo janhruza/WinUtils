@@ -68,4 +68,15 @@ public partial class MainWindow : Window
 
         return true;
     }
+
+    private void btnClose_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
+    }
+
+    private void btnCreate_Click(object sender, RoutedEventArgs e)
+    {
+        // create theme file
+        return;
+    }
 }
