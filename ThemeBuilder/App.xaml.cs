@@ -1,5 +1,8 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
+using ThemeBuilder.Pages;
+
 
 // custom definitions
 using ColorTheme = System.Collections.Generic.Dictionary<string, System.Windows.Media.Color>;   // Color theme data
@@ -12,11 +15,38 @@ namespace ThemeBuilder
     /// </summary>
     public partial class App : Application
     {
+        // page declarations
+        internal static PgGeneral pgGeneral;
+
+
+        private static bool LoadPages()
+        {
+            try
+            {
+                pgGeneral = new PgGeneral();
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+        }
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            // load pages
+            if (LoadPages() == false)
+            {
+                Shutdown(-1);
+                return;
+            }
+
             MainWindow mw = new MainWindow();
             MainWindow = mw;
             mw.Show();
+            return;
         }
 
         /// <summary>
@@ -160,6 +190,35 @@ namespace ThemeBuilder
                 { "AppMode", "Light" },
                 { "VisualStyleVersion", "10" },
             };
+        }
+
+        internal static Border CreateInputControl(string label, InputWrapper data, Thickness margin = default)
+        {
+            Border bd = new Border
+            {
+                Margin = margin
+            };
+
+            StackPanel sp = new StackPanel();
+            Label lbl = new Label
+            {
+                Content = label
+            };
+
+            TextBox txt = new TextBox
+            {
+                SelectionBrush = SystemColors.AccentColorBrush
+            };
+
+            txt.TextChanged += (s, e) =>
+            {
+                data.Value = txt.Text;
+            };
+
+            sp.Children.Add(lbl);
+            sp.Children.Add(txt);
+            bd.Child = sp;
+            return bd;
         }
     }
 

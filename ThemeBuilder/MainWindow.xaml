@@ -11,28 +11,39 @@
         WindowStartupLocation="CenterScreen"
         SizeToContent="WidthAndHeight">
 
-    <Grid Width="400">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0"
-                      Margin="10"
-                      Height="340">
-            
-            <StackPanel Orientation="Vertical"
-                        Margin="0,0,15,0"
-                        Name="stpColors">
-            </StackPanel>
-            
-        </ScrollViewer>
+        <TabControl Grid.Row="0"
+                    Width="640"
+                    Height="480">
 
+            <TabItem Header="General">
+                <Frame NavigationUIVisibility="Hidden"
+                       Name="frmGeneral"/>
+            </TabItem>
+            
+            <TabItem Header="Colors"
+                     Name="tiColors"/>
+            
+            <TabItem Header="Cursors"
+                     Name="tiCursors"/>
+            
+            <TabItem Header="Sounds"
+                     Name="tiSounds"/>
+            
+            <TabItem Header="Extra"
+                     Name="tiExtra"/>
+        </TabControl>
+        
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right"
-                    Margin="10,0,10,10">
+                    Margin="10,10,10,10">
 
             <Button Content="Close"
                     Name="btnClose"
