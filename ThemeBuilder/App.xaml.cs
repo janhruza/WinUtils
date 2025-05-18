@@ -5,8 +5,6 @@ using Microsoft.Win32;
 using ThemeBuilder.Pages;
 using ThemeBuilder.Windows;
 
-
-
 // custom definitions
 using ColorTheme = System.Collections.Generic.Dictionary<string, System.Windows.Media.Color>;   // Color theme data
 using ThemeDict = System.Collections.Generic.Dictionary<string, string>;                        // Generic theme dictionary
@@ -21,12 +19,14 @@ namespace ThemeBuilder
         // page declarations
         internal static PgGeneral pgGeneral;
         internal static PgColors pgColors;
+        internal static PgCursors pgCursors;
         private static bool LoadPages()
         {
             try
             {
                 pgGeneral = new PgGeneral();
                 pgColors = new PgColors();
+                pgCursors = new PgCursors();
                 return true;
             }
 
@@ -74,7 +74,7 @@ namespace ThemeBuilder
             return true;
         }
 
-        internal static Dictionary<string, string> AllColors => new Dictionary<string, string>
+        internal static ThemeDict AllColors => new ThemeDict
         {
             { "ScrollBar", "Scroll bar" },
             { "Background", "Background" },
@@ -159,12 +159,14 @@ namespace ThemeBuilder
                 { "NWPen", "" },
                 { "SizeAll", "" },
                 { "SizeNESW", "" },
+                { "IBeam", "" },
+                { "Crosshair", "" },
                 { "SizeNS", "" },
                 { "SizeNWSE", "" },
                 { "SizeWE", "" },
                 { "UpArrow", "" },
                 { "Wait", "" },
-                { "DefaultValue", "" }
+                { "DefaultValue", "Windows default" }
             };
         }
 
@@ -261,9 +263,12 @@ namespace ThemeBuilder
             return bd;
         }
 
-        internal static Border CreateOpenFileItem(string label, InputWrapper data, string sFilter = "Other|*.*")
+        internal static Border CreateOpenFileItem(string label, InputWrapper data, string sFilter = "Other|*.*", Thickness margin = default)
         {
-            Border bd = new Border();
+            Border bd = new Border
+            {
+                Margin = margin
+            };
 
             StackPanel sp = new StackPanel();
             Label lbl = new Label
@@ -276,7 +281,11 @@ namespace ThemeBuilder
             g.ColumnDefinitions.Add(new ColumnDefinition());
             g.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
 
-            TextBox txt = new TextBox();
+            TextBox txt = new TextBox
+            {
+                SelectionBrush = SystemColors.AccentColorBrush
+            };
+
             txt.TextChanged += (s, e) => data.Value = txt.Text;
             g.Children.Add(txt);
 
@@ -302,6 +311,7 @@ namespace ThemeBuilder
             g.Children.Add(btnOpen);
             Grid.SetColumn(btnOpen, 1);
 
+            sp.Children.Add(g);
             bd.Child = sp;
             return bd;
         }

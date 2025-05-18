@@ -26,14 +26,16 @@
                        Name="frmGeneral"/>
             </TabItem>
 
-            <TabItem Header="Colors"
-                     Name="tiColors">
+            <TabItem Header="Colors">
                 <Frame NavigationUIVisibility="Hidden"
                        Name="frmColors"/>
+                
             </TabItem>
-            
-            <TabItem Header="Cursors"
-                     Name="tiCursors"/>
+
+            <TabItem Header="Cursors">
+                <Frame NavigationUIVisibility="Hidden"
+                       Name="frmCursors" />
+            </TabItem>
             
             <TabItem Header="Sounds"
                      Name="tiSounds"/>

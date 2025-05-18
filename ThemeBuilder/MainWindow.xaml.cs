@@ -26,6 +26,11 @@ public partial class MainWindow : Window
         {
             frmColors.Content = App.pgColors;
         }
+
+        if (frmCursors != null)
+        {
+            frmCursors.Content = App.pgCursors;
+        }
     }
 
     private Dictionary<string, Color> _colors;
