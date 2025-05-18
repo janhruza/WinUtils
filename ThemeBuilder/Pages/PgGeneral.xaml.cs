@@ -53,17 +53,19 @@ public partial class PgGeneral : Page, IThemeBuilder
     public string sIconRecycleBinFull => sIconRecycleBinFullW.Value;
     public string sIconRecycleBinEmpty => sIconRecycleBinEmptyW.Value;
 
+    private const string sIconFilter = "Icon Files|*.ico|Other|*.*";
+
     private void RefreshUI()
     {
         stp.Children.Clear();
 
         stp.Children.Add(App.CreateInputControl("Display name", sNameW, default));
-        stp.Children.Add(App.CreateInputControl("Brand image", sImageW, new Thickness(0, 5, 0, 0)));
-        stp.Children.Add(App.CreateInputControl("Computer icon", sIconComputerW, new Thickness(0, 5, 0, 0)));
-        stp.Children.Add(App.CreateInputControl("Documents icon", sIconDocumentsW, new Thickness(0, 5, 0, 0)));
-        stp.Children.Add(App.CreateInputControl("Network icon", sIconNetworkW, new Thickness(0, 5, 0, 0)));
-        stp.Children.Add(App.CreateInputControl("Recycle bin (full) icon", sIconRecycleBinFullW, new Thickness(0, 5, 0, 0)));
-        stp.Children.Add(App.CreateInputControl("Recycle bin (empty) icon", sIconRecycleBinEmptyW, new Thickness(0, 5, 0, 0)));
+        stp.Children.Add(App.CreateOpenFileItem("Brand image", sImageW, "PNG Image|*.png|Other|*.*", new Thickness(0, 5, 0, 0)));
+        stp.Children.Add(App.CreateOpenFileItem("Computer icon", sIconComputerW, sIconFilter, new Thickness(0, 5, 0, 0)));
+        stp.Children.Add(App.CreateOpenFileItem("Documents icon", sIconDocumentsW, sIconFilter, new Thickness(0, 5, 0, 0)));
+        stp.Children.Add(App.CreateOpenFileItem("Network icon", sIconNetworkW, sIconFilter, new Thickness(0, 5, 0, 0)));
+        stp.Children.Add(App.CreateOpenFileItem("Recycle bin (full) icon", sIconRecycleBinFullW, sIconFilter, new Thickness(0, 5, 0, 0)));
+        stp.Children.Add(App.CreateOpenFileItem("Recycle bin (empty) icon", sIconRecycleBinEmptyW, sIconFilter, new Thickness(0, 5, 0, 0)));
         return;
     }
 }

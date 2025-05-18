@@ -193,7 +193,7 @@ namespace ThemeBuilder
                 { "ColorizationColor", "0xFF357EC7" }, // Windows Blue
                 { "SystemMode", "Light" },
                 { "AppMode", "Light" },
-                { "VisualStyleVersion", "10" },
+                { "VisualStyleVersion", "10" }
             };
         }
 

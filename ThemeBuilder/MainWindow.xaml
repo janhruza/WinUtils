@@ -36,12 +36,22 @@
                 <Frame NavigationUIVisibility="Hidden"
                        Name="frmCursors" />
             </TabItem>
-            
+
+            <TabItem Header="Desktop">
+                <Frame NavigationUIVisibility="Hidden"
+                       Name="frmDesktop" />
+            </TabItem>
+
             <TabItem Header="Sounds"
-                     Name="tiSounds"/>
-            
+                     Name="tiSounds">
+
+                <Frame NavigationUIVisibility="Hidden"
+                       Name="frmSounds" />
+
+            </TabItem>
+
             <TabItem Header="Extra"
-                     Name="tiExtra"/>
+                     Name="tiExtra" />
         </TabControl>
         
         <StackPanel Grid.Row="1"
