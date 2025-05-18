@@ -25,9 +25,12 @@
                 <Frame NavigationUIVisibility="Hidden"
                        Name="frmGeneral"/>
             </TabItem>
-            
+
             <TabItem Header="Colors"
-                     Name="tiColors"/>
+                     Name="tiColors">
+                <Frame NavigationUIVisibility="Hidden"
+                       Name="frmColors"/>
+            </TabItem>
             
             <TabItem Header="Cursors"
                      Name="tiCursors"/>

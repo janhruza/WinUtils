@@ -1,7 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Microsoft.Win32;
 using ThemeBuilder.Pages;
+using ThemeBuilder.Windows;
+
 
 
 // custom definitions
@@ -17,13 +20,13 @@ namespace ThemeBuilder
     {
         // page declarations
         internal static PgGeneral pgGeneral;
-
-
+        internal static PgColors pgColors;
         private static bool LoadPages()
         {
             try
             {
                 pgGeneral = new PgGeneral();
+                pgColors = new PgColors();
                 return true;
             }
 
@@ -217,6 +220,88 @@ namespace ThemeBuilder
 
             sp.Children.Add(lbl);
             sp.Children.Add(txt);
+            bd.Child = sp;
+            return bd;
+        }
+
+        internal static Border CreateColorPickerItem(ColorTheme tColors, string sKey)
+        {
+            Border bd = new Border();
+
+            Grid g = new Grid();
+            g.ColumnDefinitions.Add(new ColumnDefinition());
+            g.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto});
+
+            Label lbl = new Label
+            {
+                Content = App.AllColors[sKey],
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            Button btn = new Button
+            {
+                Content = "..."
+            };
+
+            btn.Click += (s, e) =>
+            {
+                ColorPicker picker = new ColorPicker(sKey, tColors[sKey]);
+                if (picker.ShowDialog() == true)
+                {
+                    tColors[sKey] = picker.Result;
+                    btn.Background = new SolidColorBrush(picker.Result);
+                }
+            };
+
+            g.Children.Add(lbl);
+            g.Children.Add(btn);
+            Grid.SetColumn(btn, 1);
+
+            bd.Child = g;
+            return bd;
+        }
+
+        internal static Border CreateOpenFileItem(string label, InputWrapper data, string sFilter = "Other|*.*")
+        {
+            Border bd = new Border();
+
+            StackPanel sp = new StackPanel();
+            Label lbl = new Label
+            {
+                Content = label
+            };
+            sp.Children.Add(lbl);
+
+            Grid g = new Grid();
+            g.ColumnDefinitions.Add(new ColumnDefinition());
+            g.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+
+            TextBox txt = new TextBox();
+            txt.TextChanged += (s, e) => data.Value = txt.Text;
+            g.Children.Add(txt);
+
+            Button btnOpen = new Button
+            {
+                Content = "...",
+                Margin = new Thickness(5, 0, 0, 0)
+            };
+
+            btnOpen.Click += (s, e) =>
+            {
+                OpenFileDialog ofd = new OpenFileDialog
+                {
+                    Filter = sFilter
+                };
+
+                if (ofd.ShowDialog() == true)
+                {
+                    txt.Text = ofd.FileName;
+                }
+            };
+
+            g.Children.Add(btnOpen);
+            Grid.SetColumn(btnOpen, 1);
+
             bd.Child = sp;
             return bd;
         }

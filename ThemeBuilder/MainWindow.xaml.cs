@@ -21,6 +21,11 @@ public partial class MainWindow : Window
         {
             frmGeneral.Content = App.pgGeneral;
         }
+
+        if (frmColors != null)
+        {
+            frmColors.Content = App.pgColors;
+        }
     }
 
     private Dictionary<string, Color> _colors;
