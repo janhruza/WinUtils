@@ -271,7 +271,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 		case WM_CTLCOLORBTN:
 			HDC hdc = GetDC(hDlg);
 			SetBkMode(hdc, hBrush);
-			return TRUE;
+			return hdc;
 
 		default:
 		{
