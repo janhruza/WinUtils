@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11304.174 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibInject", "LibInject\LibInject.vcxproj", "{1903D2BC-FD69-426C-8AD0-9954CF15503D}"
 EndProject
@@ -19,6 +19,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Format", "Format\Format.vcxproj", "{2326501C-AD2F-41CA-B96A-8567FD4C9F15}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThemeBuilder", "ThemeBuilder\ThemeBuilder.csproj", "{CE11D70E-3A96-5CE2-CEF2-3B8DFF70F300}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CSnake", "CSnake\CSnake.vcxproj", "{EB214CFF-8FD5-494E-AF60-7422A661028A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +141,18 @@ Global
 		{CE11D70E-3A96-5CE2-CEF2-3B8DFF70F300}.Release|x64.Build.0 = Release|x64
 		{CE11D70E-3A96-5CE2-CEF2-3B8DFF70F300}.Release|x86.ActiveCfg = Release|Any CPU
 		{CE11D70E-3A96-5CE2-CEF2-3B8DFF70F300}.Release|x86.Build.0 = Release|Any CPU
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Debug|Any CPU.Build.0 = Debug|x64
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Debug|x64.ActiveCfg = Debug|x64
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Debug|x64.Build.0 = Debug|x64
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Debug|x86.ActiveCfg = Debug|Win32
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Debug|x86.Build.0 = Debug|Win32
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Release|Any CPU.ActiveCfg = Release|x64
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Release|Any CPU.Build.0 = Release|x64
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Release|x64.ActiveCfg = Release|x64
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Release|x64.Build.0 = Release|x64
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Release|x86.ActiveCfg = Release|Win32
+		{EB214CFF-8FD5-494E-AF60-7422A661028A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
