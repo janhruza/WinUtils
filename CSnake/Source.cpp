@@ -19,6 +19,5 @@ INT WINAPI wWinMain(HINSTANCE hInstance,
 	HMENU menu = LoadMenu(hInstance, MAKEINTRESOURCE(IDR_APP_MENU));
 	SnakeWindow wnd = SnakeWindow(hInstance, nullptr);
 	wnd.Show();
-
 	return 0;
 }

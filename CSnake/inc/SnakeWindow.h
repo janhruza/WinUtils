@@ -129,6 +129,11 @@ public:
 		DestroyWindow(hWnd);
 	}
 
+	HWND GetHandle()
+	{
+		return hWnd;
+	}
+
 private:
 	WNDCLASSEX wc;
 	HWND hWnd;
