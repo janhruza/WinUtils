@@ -5,10 +5,18 @@
 #include <dwmapi.h>
 
 #pragma comment(lib, "dwmapi.lib")
+#pragma comment(lib, "uxtheme.lib")
 
-constexpr int BLOCK_SIZE = 25;
-constexpr int BLOCK_WINDOW_WIDTH = 30;
-constexpr int BLOCK_WINDOW_HEIGHT = 25;
+//#pragma comment(linker,"\"/manifestdependency:type='win32' \
+//name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
+//processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
+constexpr int BLOCK_SIZE = 50;
+constexpr int BLOCK_WINDOW_WIDTH = 10;
+constexpr int BLOCK_WINDOW_HEIGHT = 10;
+
+constexpr int MI_REFRESH = 0x1000;
+constexpr int MI_CLOSE = 0x1001;
 
 /// <summary>
 /// Simple class that creates a new window.
@@ -74,10 +82,10 @@ public:
 			this);
 
 		// set the dwm properties
-		/*COLORREF color = RGB(255, 255, 255);
+		/*COLORREF color = RGB(0x00, 0x00, 0x00);
 		DwmSetWindowAttribute(hWnd, DWMWA_CAPTION_COLOR, &color, sizeof(color));*/
 
-		DWM_SYSTEMBACKDROP_TYPE sbt = DWMSBT_MAINWINDOW;
+		DWM_SYSTEMBACKDROP_TYPE sbt = DWMSBT_AUTO;
 		DwmSetWindowAttribute(hWnd, DWMWA_SYSTEMBACKDROP_TYPE, &sbt, sizeof(sbt));
 
 		BOOL darkMode = TRUE;
@@ -88,6 +96,8 @@ public:
 
 		BOOL ncRendering = TRUE;
 		DwmSetWindowAttribute(hWnd, DWMWA_NCRENDERING_ENABLED, &ncRendering, sizeof(ncRendering));
+
+		SetThemeAppProperties(STAP_ALLOW_NONCLIENT | STAP_ALLOW_CONTROLS | STAP_ALLOW_WEBCONTENT);
 
 		// set app menu (if any)
 		SetMenu(hWnd, menu);
@@ -115,8 +125,8 @@ public:
 
 	BOOL Resize(int rows, int cols)
 	{
-		this->Width = cols * BLOCK_SIZE + 31;
-		this->Height = rows * BLOCK_SIZE + 2;
+		this->Width = cols * BLOCK_SIZE;
+		this->Height = rows * BLOCK_SIZE;
 		return SetWindowPos(hWnd, nullptr, 0, 0, this->Width, this->Height, SWP_NOOWNERZORDER);
 	}
 
@@ -221,37 +231,85 @@ private:
 
 			case WM_PAINT:
 			{
-				RECT rect;
 				PAINTSTRUCT ps;
-				GetClientRect(hWnd, &rect);
 				HDC hdc = BeginPaint(hWnd, &ps);
-				RECT tempRect;
 
+				RECT clientRect;
+				GetClientRect(hWnd, &clientRect);
+
+				POINT pt;
+				GetCursorPos(&pt);
+				ScreenToClient(hWnd, &pt); // convert cursor to client coordinates
+				RECT tempRect;
 				for (int i = 0; i < BLOCK_WINDOW_WIDTH; i++)
 				{
-					int temp = 0;
 					for (int j = 0; j < BLOCK_WINDOW_HEIGHT; j++)
 					{
-						tempRect.left = rect.left + (i * BLOCK_SIZE);
-						tempRect.right = rect.left + (i * BLOCK_SIZE) + BLOCK_SIZE;
-						tempRect.top = rect.top + (j * BLOCK_SIZE);
-						tempRect.bottom = rect.top + (j * BLOCK_SIZE) + BLOCK_SIZE;
+						tempRect.left = clientRect.left + (i * BLOCK_SIZE);
+						tempRect.right = tempRect.left + BLOCK_SIZE;
+						tempRect.top = clientRect.top + (j * BLOCK_SIZE);
+						tempRect.bottom = tempRect.top + BLOCK_SIZE;
 
-						// paint like a chess board
-						if ((i + j) % 2 == 0)
+						// Default fill color (e.g. gray background)
+						HBRUSH hBrush = (HBRUSH)(COLOR_WINDOW + 1);
+
+						// Highlight only the block under the cursor
+						if (pt.x >= tempRect.left && pt.x <= tempRect.right &&
+							pt.y >= tempRect.top && pt.y <= tempRect.bottom)
 						{
-							// black
-							FillRect(hdc, &tempRect, (HBRUSH)(COLOR_WINDOWTEXT + 1));
+							hBrush = (HBRUSH)(COLOR_WINDOWTEXT + 1); // white
 						}
-						else
-						{
-							// white
-							FillRect(hdc, &tempRect, (HBRUSH)(COLOR_WINDOW + 1));
-						}
+
+						FillRect(hdc, &tempRect, hBrush);
 					}
 				}
 
 				EndPaint(hWnd, &ps);
+				return 0; // don't call DefWindowProc here
+			}
+
+			case WM_MOUSEMOVE:
+			{
+				RECT rect;
+				GetClientRect(hWnd, &rect);
+				InvalidateRect(hWnd, &rect, FALSE);
+				return 0;
+			}
+
+			case WM_RBUTTONDOWN:
+			{
+				// create menu
+				HMENU hMenu = CreatePopupMenu();
+				AppendMenu(hMenu, MF_STRING, MI_REFRESH, L"Reload\tF5");
+				AppendMenu(hMenu, MF_SEPARATOR, 0, nullptr);
+				AppendMenu(hMenu, MF_STRING, MI_CLOSE, L"Close\tAlt+F4");
+
+				POINT pt;
+				GetCursorPos(&pt);
+				//ScreenToClient(hWnd, &pt);
+
+				if (TrackPopupMenu(hMenu, TPM_LEFTALIGN, pt.x, pt.y, 0, hWnd, nullptr) == TRUE)
+				{
+					DestroyMenu(hMenu);
+				}
+				return DefWindowProc(hWnd, msg, wParam, lParam);
+			}
+
+			case WM_COMMAND:
+			{
+				switch (wParam)
+				{
+					case MI_REFRESH:
+						RECT rect;
+						GetClientRect(hWnd, &rect);
+						InvalidateRect(hWnd, &rect, TRUE);
+						break;
+
+					case MI_CLOSE:
+						SendMessage(hWnd, WM_CLOSE, 0, 0);
+						break;
+				}
+
 				return DefWindowProc(hWnd, msg, wParam, lParam);
 			}
 

@@ -10,9 +10,9 @@
 
 /* App's main entry point. */
 INT WINAPI wWinMain(HINSTANCE hInstance,
-			 HINSTANCE hPrevInstance,
-			 PWSTR lpCommandLine,
-			 int nCmdShow)
+					HINSTANCE hPrevInstance,
+					PWSTR lpCommandLine,
+					int nCmdShow)
 {
 
 	// create a new window
