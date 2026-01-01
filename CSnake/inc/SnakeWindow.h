@@ -234,45 +234,69 @@ private:
 				PAINTSTRUCT ps;
 				HDC hdc = BeginPaint(hWnd, &ps);
 
-				RECT clientRect;
-				GetClientRect(hWnd, &clientRect);
+				RECT rc = ps.rcPaint; // only the invalidated area
+				int i = rc.left / BLOCK_SIZE;
+				int j = rc.top / BLOCK_SIZE;
+
+				RECT tempRect;
+				tempRect.left = i * BLOCK_SIZE;
+				tempRect.top = j * BLOCK_SIZE;
+				tempRect.right = tempRect.left + BLOCK_SIZE;
+				tempRect.bottom = tempRect.top + BLOCK_SIZE;
 
 				POINT pt;
 				GetCursorPos(&pt);
-				ScreenToClient(hWnd, &pt); // convert cursor to client coordinates
-				RECT tempRect;
-				for (int i = 0; i < BLOCK_WINDOW_WIDTH; i++)
-				{
-					for (int j = 0; j < BLOCK_WINDOW_HEIGHT; j++)
-					{
-						tempRect.left = clientRect.left + (i * BLOCK_SIZE);
-						tempRect.right = tempRect.left + BLOCK_SIZE;
-						tempRect.top = clientRect.top + (j * BLOCK_SIZE);
-						tempRect.bottom = tempRect.top + BLOCK_SIZE;
+				ScreenToClient(hWnd, &pt);
 
-						// Default fill color (e.g. gray background)
-						HBRUSH hBrush = (HBRUSH)(COLOR_WINDOW + 1);
+				HBRUSH hBrush = (pt.x >= tempRect.left && pt.x <= tempRect.right &&
+					pt.y >= tempRect.top && pt.y <= tempRect.bottom)
+					? (HBRUSH)(COLOR_WINDOWTEXT + 1) // highlight
+					: (HBRUSH)(COLOR_WINDOW + 1);    // default
 
-						// Highlight only the block under the cursor
-						if (pt.x >= tempRect.left && pt.x <= tempRect.right &&
-							pt.y >= tempRect.top && pt.y <= tempRect.bottom)
-						{
-							hBrush = (HBRUSH)(COLOR_WINDOWTEXT + 1); // white
-						}
-
-						FillRect(hdc, &tempRect, hBrush);
-					}
-				}
+				FillRect(hdc, &tempRect, hBrush);
 
 				EndPaint(hWnd, &ps);
-				return 0; // don't call DefWindowProc here
+				return 0;
 			}
 
 			case WM_MOUSEMOVE:
 			{
-				RECT rect;
-				GetClientRect(hWnd, &rect);
-				InvalidateRect(hWnd, &rect, FALSE);
+				POINT pt;
+				GetCursorPos(&pt);
+				ScreenToClient(hWnd, &pt);
+
+				int blockX = pt.x / BLOCK_SIZE;
+				int blockY = pt.y / BLOCK_SIZE;
+
+				static int lastX = -1, lastY = -1;
+
+				if (blockX != lastX || blockY != lastY)
+				{
+					RECT oldRect, newRect;
+
+					if (lastX >= 0 && lastY >= 0) {
+						oldRect.left = lastX * BLOCK_SIZE;
+						oldRect.top = lastY * BLOCK_SIZE;
+						oldRect.right = oldRect.left + BLOCK_SIZE;
+						oldRect.bottom = oldRect.top + BLOCK_SIZE;
+						InvalidateRect(hWnd, &oldRect, FALSE);
+					}
+
+					newRect.left = blockX * BLOCK_SIZE;
+					newRect.top = blockY * BLOCK_SIZE;
+					newRect.right = newRect.left + BLOCK_SIZE;
+					newRect.bottom = newRect.top + BLOCK_SIZE;
+					InvalidateRect(hWnd, &newRect, FALSE);
+
+					lastX = blockX;
+					lastY = blockY;
+				}
+
+				// update window title
+				WCHAR text[128];
+				wsprintfW(text, L"My Snake - %02dx%02d", pt.x, pt.y);
+				SetWindowText(hWnd, text);
+
 				return 0;
 			}
 
