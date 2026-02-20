@@ -10,6 +10,13 @@
 /// </summary>
 const LPCSTR windowTitle = "MemUpdate";
 
+inline void ClearBuffer(void)
+{
+	int ch;
+	while ((ch = getchar()) != '\n' && ch != EOF);
+	return;
+}
+
 int main(int argc, const char* argv[])
 {
 	// program initialization
@@ -32,7 +39,7 @@ int main(int argc, const char* argv[])
 		if (BeginSession(processName, &session) != MU_OK)
 		{
 			printf_s("Unable to initialize the session. Make sure the process \'%s\' exists.\nTry again? [Y/n]: ", processName);
-			(void)getchar();
+			ClearBuffer();
 
 			int c = getchar();
 			if (c != (int)'y' && c != (char)'Y')
@@ -82,7 +89,8 @@ int main(int argc, const char* argv[])
 		LPSTR input[MAX_PATH] = { NULL };
 		printf_s("[%s (%d)]# ", session.sProcessName, session.dwProcessID);
 		(void)scanf_s("%s", (STRING)input, MAX_PATH);
-		(void)getchar();
+
+		ClearBuffer();
 
 		if (strcmp((STRING)input, "exit") == 0)
 		{
