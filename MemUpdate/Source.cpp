@@ -42,7 +42,7 @@ int main(int argc, const char* argv[])
 			ClearBuffer();
 
 			int c = getchar();
-			if (c != (int)'y' && c != (char)'Y')
+			if (c != (int)'y' && c != (int)'Y')
 			{
 				return EXIT_FAILURE;
 			}
