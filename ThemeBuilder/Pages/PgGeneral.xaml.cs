@@ -14,18 +14,18 @@ public partial class PgGeneral : Page, IThemeBuilder
     public string BuildThemeSection()
     {
         StringBuilder sb = new StringBuilder();
-        sb.AppendLine(ThemeSection);
-        sb.AppendLine($"DisplayName={sName}");
-        sb.AppendLine($"BrandImage={sImage}");
-        sb.AppendLine($"[CLSID\\{{20D04FE0-3AEA-1069-A2D8-08002B30309D}}\\DefaultIcon]");
-        sb.AppendLine($"DefaultValue={sIconComputer}");
-        sb.AppendLine($"[CLSID\\{{59031A47-3F72-44A7-89C5-5595FE6B30EE}}\\DefaultIcon]");
-        sb.AppendLine($"DefaultValue={sIconDocuments}");
-        sb.AppendLine($"[CLSID\\{{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}}\\DefaultIcon]");
-        sb.AppendLine($"DefaultValue={sIconNetwork}");
-        sb.AppendLine($"[CLSID\\{{645FF040-5081-101B-9F08-00AA002F954E}}\\DefaultIcon]");
-        sb.AppendLine($"Full={sIconRecycleBinFull}");
-        sb.AppendLine($"Empty={sIconRecycleBinEmpty}");
+        _ = sb.AppendLine(ThemeSection);
+        _ = sb.AppendLine($"DisplayName={sName}");
+        _ = sb.AppendLine($"BrandImage={sImage}");
+        _ = sb.AppendLine($"[CLSID\\{{20D04FE0-3AEA-1069-A2D8-08002B30309D}}\\DefaultIcon]");
+        _ = sb.AppendLine($"DefaultValue={sIconComputer}");
+        _ = sb.AppendLine($"[CLSID\\{{59031A47-3F72-44A7-89C5-5595FE6B30EE}}\\DefaultIcon]");
+        _ = sb.AppendLine($"DefaultValue={sIconDocuments}");
+        _ = sb.AppendLine($"[CLSID\\{{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}}\\DefaultIcon]");
+        _ = sb.AppendLine($"DefaultValue={sIconNetwork}");
+        _ = sb.AppendLine($"[CLSID\\{{645FF040-5081-101B-9F08-00AA002F954E}}\\DefaultIcon]");
+        _ = sb.AppendLine($"Full={sIconRecycleBinFull}");
+        _ = sb.AppendLine($"Empty={sIconRecycleBinEmpty}");
         return sb.ToString();
     }
 
@@ -45,27 +45,27 @@ public partial class PgGeneral : Page, IThemeBuilder
     private InputWrapper sIconRecycleBinEmptyW = new InputWrapper();
 
     // field values
-    public string sName => sNameW.Value;
-    public string sImage => sImageW.Value;
-    public string sIconComputer => sIconComputerW.Value;
-    public string sIconDocuments => sIconDocumentsW.Value;
-    public string sIconNetwork => sIconNetworkW.Value;
-    public string sIconRecycleBinFull => sIconRecycleBinFullW.Value;
-    public string sIconRecycleBinEmpty => sIconRecycleBinEmptyW.Value;
+    public string sName => this.sNameW.Value;
+    public string sImage => this.sImageW.Value;
+    public string sIconComputer => this.sIconComputerW.Value;
+    public string sIconDocuments => this.sIconDocumentsW.Value;
+    public string sIconNetwork => this.sIconNetworkW.Value;
+    public string sIconRecycleBinFull => this.sIconRecycleBinFullW.Value;
+    public string sIconRecycleBinEmpty => this.sIconRecycleBinEmptyW.Value;
 
     private const string sIconFilter = "Icon Files|*.ico|Other|*.*";
 
     private void RefreshUI()
     {
-        stp.Children.Clear();
+        this.stp.Children.Clear();
 
-        stp.Children.Add(App.CreateInputControl("Display name", sNameW, default));
-        stp.Children.Add(App.CreateOpenFileItem("Brand image", sImageW, "PNG Image|*.png|Other|*.*", new Thickness(0, 5, 0, 0)));
-        stp.Children.Add(App.CreateOpenFileItem("Computer icon", sIconComputerW, sIconFilter, new Thickness(0, 5, 0, 0)));
-        stp.Children.Add(App.CreateOpenFileItem("Documents icon", sIconDocumentsW, sIconFilter, new Thickness(0, 5, 0, 0)));
-        stp.Children.Add(App.CreateOpenFileItem("Network icon", sIconNetworkW, sIconFilter, new Thickness(0, 5, 0, 0)));
-        stp.Children.Add(App.CreateOpenFileItem("Recycle bin (full) icon", sIconRecycleBinFullW, sIconFilter, new Thickness(0, 5, 0, 0)));
-        stp.Children.Add(App.CreateOpenFileItem("Recycle bin (empty) icon", sIconRecycleBinEmptyW, sIconFilter, new Thickness(0, 5, 0, 0)));
+        _ = this.stp.Children.Add(App.CreateInputControl("Display name", this.sNameW, default));
+        _ = this.stp.Children.Add(App.CreateOpenFileItem("Brand image", this.sImageW, "PNG Image|*.png|Other|*.*", new Thickness(0, 5, 0, 0)));
+        _ = this.stp.Children.Add(App.CreateOpenFileItem("Computer icon", this.sIconComputerW, sIconFilter, new Thickness(0, 5, 0, 0)));
+        _ = this.stp.Children.Add(App.CreateOpenFileItem("Documents icon", this.sIconDocumentsW, sIconFilter, new Thickness(0, 5, 0, 0)));
+        _ = this.stp.Children.Add(App.CreateOpenFileItem("Network icon", this.sIconNetworkW, sIconFilter, new Thickness(0, 5, 0, 0)));
+        _ = this.stp.Children.Add(App.CreateOpenFileItem("Recycle bin (full) icon", this.sIconRecycleBinFullW, sIconFilter, new Thickness(0, 5, 0, 0)));
+        _ = this.stp.Children.Add(App.CreateOpenFileItem("Recycle bin (empty) icon", this.sIconRecycleBinEmptyW, sIconFilter, new Thickness(0, 5, 0, 0)));
         return;
     }
 }

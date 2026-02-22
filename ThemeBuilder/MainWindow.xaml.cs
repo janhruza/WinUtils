@@ -10,26 +10,26 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
-        _colors = App.CreateThemeColors();
+        this._colors = App.CreateThemeColors();
         InitializeComponent();
         LoadPages();
     }
 
     private void LoadPages()
     {
-        if (frmGeneral != null)
+        if (this.frmGeneral != null)
         {
-            frmGeneral.Content = App.pgGeneral;
+            this.frmGeneral.Content = App.pgGeneral;
         }
 
-        if (frmColors != null)
+        if (this.frmColors != null)
         {
-            frmColors.Content = App.pgColors;
+            this.frmColors.Content = App.pgColors;
         }
 
-        if (frmCursors != null)
+        if (this.frmCursors != null)
         {
-            frmCursors.Content = App.pgCursors;
+            this.frmCursors.Content = App.pgCursors;
         }
     }
 
@@ -37,7 +37,7 @@ public partial class MainWindow : Window
 
     private void btnClose_Click(object sender, RoutedEventArgs e)
     {
-        this.Close();
+        Close();
     }
 
     private void btnCreate_Click(object sender, RoutedEventArgs e)

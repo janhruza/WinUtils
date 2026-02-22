@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -13,7 +12,7 @@ public partial class PgColors : Page, IThemeBuilder
     public PgColors()
     {
         InitializeComponent();
-        dColors = App.CreateThemeColors();
+        this.dColors = App.CreateThemeColors();
         RefreshUI();
     }
 
@@ -22,12 +21,12 @@ public partial class PgColors : Page, IThemeBuilder
     public string BuildThemeSection()
     {
         StringBuilder sb = new StringBuilder();
-        sb.AppendLine(ThemeSection);
+        _ = sb.AppendLine(ThemeSection);
 
-        foreach (var pair in dColors)
+        foreach (var pair in this.dColors)
         {
             string sValue = $"{pair.Value.R} {pair.Value.G} {pair.Value.B}";
-            sb.AppendLine($"{pair.Key}={sValue}");
+            _ = sb.AppendLine($"{pair.Key}={sValue}");
         }
 
         return sb.ToString();
@@ -37,13 +36,13 @@ public partial class PgColors : Page, IThemeBuilder
 
     private void RefreshUI()
     {
-        if (dColors == null) return;
+        if (this.dColors == null) return;
 
-        stp.Children.Clear();
-        foreach (var kp in dColors)
+        this.stp.Children.Clear();
+        foreach (var kp in this.dColors)
         {
-            Border bd = App.CreateColorPickerItem(dColors, kp.Key);
-            stp.Children.Add(bd);
+            Border bd = App.CreateColorPickerItem(this.dColors, kp.Key);
+            _ = this.stp.Children.Add(bd);
         }
 
         return;

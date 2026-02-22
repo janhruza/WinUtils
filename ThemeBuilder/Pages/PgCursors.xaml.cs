@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace ThemeBuilder.Pages;
@@ -14,11 +13,11 @@ public partial class PgCursors : Page, IThemeBuilder
     public string BuildThemeSection()
     {
         StringBuilder sb = new StringBuilder();
-        sb.AppendLine(ThemeSection);
+        _ = sb.AppendLine(ThemeSection);
 
-        foreach (var kp in dCursors)
+        foreach (var kp in this.dCursors)
         {
-            sb.AppendLine($"{kp.Key}={GetValue(kp.Key)}");
+            _ = sb.AppendLine($"{kp.Key}={GetValue(kp.Key)}");
         }
 
         return sb.ToString();
@@ -27,12 +26,12 @@ public partial class PgCursors : Page, IThemeBuilder
     public PgCursors()
     {
         InitializeComponent();
-        dCursors = App.CreateThemeCursors();
-        lWrappers = new List<InputWrapper>();
+        this.dCursors = App.CreateThemeCursors();
+        this.lWrappers = new List<InputWrapper>();
 
-        for (int x = 0; x < dCursors.Count; x++)
+        for (int x = 0; x < this.dCursors.Count; x++)
         {
-            lWrappers.Add(new InputWrapper());
+            this.lWrappers.Add(new InputWrapper());
         }
 
         RefreshUI();
@@ -43,21 +42,21 @@ public partial class PgCursors : Page, IThemeBuilder
 
     private string GetValue(string sKey)
     {
-        int index = dCursors.Keys.ToList().IndexOf(sKey);
-        return lWrappers[index].Value;
+        int index = this.dCursors.Keys.ToList().IndexOf(sKey);
+        return this.lWrappers[index].Value;
     }
 
     private void RefreshUI()
     {
-        if (dCursors == null) return;
+        if (this.dCursors == null) return;
 
-        stp.Children.Clear();
+        this.stp.Children.Clear();
 
-        for (int x = 0; x < dCursors.Count; x++)
+        for (int x = 0; x < this.dCursors.Count; x++)
         {
-            var kp = dCursors.ElementAt(x);
-            Border bd = App.CreateOpenFileItem(kp.Key, lWrappers[x], "Cursors|*.cur;*.ani|Other|*.*", new System.Windows.Thickness(0, (x > 0 ? 5 : 0), 0, 0));
-            stp.Children.Add(bd);
+            var kp = this.dCursors.ElementAt(x);
+            Border bd = App.CreateOpenFileItem(kp.Key, this.lWrappers[x], "Cursors|*.cur;*.ani|Other|*.*", new System.Windows.Thickness(0, (x > 0 ? 5 : 0), 0, 0));
+            _ = this.stp.Children.Add(bd);
         }
     }
 }
