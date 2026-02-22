@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <string.h>
 
+#define WINGET_COMMAND "winget"
+
 /// <summary>
 /// Starts a new process using the Windows shell.
 /// </summary>
@@ -13,7 +15,8 @@ static inline BOOL WuStartProcess(LPCSTR program, LPCSTR args)
 {
 	LPSTR command[80];
 	sprintf_s(command, 80, "%s %s\0", program, args);
-	return system(command) == 0 ? TRUE : FALSE;
+	int exitCode = system(command);
+	return exitCode == 0 ? TRUE : FALSE;
 }
 
 /// <summary>
@@ -22,7 +25,7 @@ static inline BOOL WuStartProcess(LPCSTR program, LPCSTR args)
 /// <returns>Operation result.</returns>
 inline static BOOL WuCheckForUpdates(void)
 {
-	return WuStartProcess("winget", "update");
+	return WuStartProcess(WINGET_COMMAND, "update");
 }
 
 /// <summary>
@@ -31,7 +34,7 @@ inline static BOOL WuCheckForUpdates(void)
 /// <returns>Operation result.</returns>
 inline static BOOL WuInstallUpdates(void)
 {
-	return WuStartProcess("winget", "update --all");
+	return WuStartProcess(WINGET_COMMAND, "update --all");
 }
 
 /// <summary>
@@ -43,7 +46,7 @@ inline static BOOL WuInstallPackages(LPCSTR packageIds)
 {
 	CHAR args[1024] = { 0 };
 	sprintf_s(args, sizeof(args), "install %s", packageIds);
-	return WuStartProcess("winget", args);
+	return WuStartProcess(WINGET_COMMAND, args);
 }
 
 /// <summary>
@@ -55,5 +58,24 @@ inline static BOOL WuRemovePackages(LPCSTR packageIds)
 {
 	CHAR args[1024] = { 0 };
 	sprintf_s(args, sizeof(args), "remove %s", packageIds);
-	return WuStartProcess("winget", args);
+	return WuStartProcess(WINGET_COMMAND, args);
+}
+
+/// <summary>
+/// Opens the WinGet configuration file.
+/// </summary>
+/// <returns>Operation result.</returns>
+inline static BOOL WuOpenConfig(void)
+{
+	return WuStartProcess(WINGET_COMMAND, "config");
+}
+
+/// <summary>
+/// Runs a custom WinGet command.
+/// </summary>
+/// <param name="args">Winget command arguments.</param>
+/// <returns>Operation result.</returns>
+inline static BOOL WuCustomCommand(LPSTR args)
+{
+	return WuStartProcess(WINGET_COMMAND, args);
 }
