@@ -1,13 +1,16 @@
 #pragma once
 #include "inc/WindowsUpdate.h"
 
+#define EXIT_SUCCESS 0
+#define EXIT_FAILURE 1
+
+
 inline static void flushstdin()
 {
 	int c;
 	while ((c = getchar()) != '\n' && c != EOF) {}
 	return;
 }
-
 
 
 INT wmain(int argc, const wchar_t* argv[])
