@@ -46,7 +46,7 @@ INT wmain(int argc, const wchar_t* argv[])
 			break;
 
 		case 2:
-			// instal all pending updates
+			// install all pending updates
 			printf_s("\n");
 			WuInstallUpdates();
 			printf_s("\n");
@@ -57,7 +57,7 @@ INT wmain(int argc, const wchar_t* argv[])
 			{
 				printf_s("\n");
 				CHAR packageIds[1024] = { 0 };
-				printf_s("List all package id's separated by spaces\n# ");
+				printf_s("List all package ids separated by spaces\n# ");
 
 				if (fgets(packageIds, sizeof(packageIds), stdin) != NULL)
 				{
@@ -73,7 +73,7 @@ INT wmain(int argc, const wchar_t* argv[])
 			{
 				printf_s("\n");
 				CHAR packageIds[1024] = { 0 };
-				printf_s("List all package id's separated by spaces\n# ");
+				printf_s("List all package ids separated by spaces\n# ");
 
 				if (fgets(packageIds, sizeof(packageIds), stdin) != NULL)
 				{
