@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
-#include <Windows.h>
 #include <string.h>
+#include <Windows.h>
 
 #define WINGET_COMMAND "winget"
 
