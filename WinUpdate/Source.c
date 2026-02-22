@@ -1,9 +1,10 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
+
 #include "inc/WindowsUpdate.h"
 
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
-
 
 inline static void flushstdin()
 {
@@ -22,6 +23,8 @@ INT wmain(int argc, const wchar_t* argv[])
 	}
 
 	SetConsoleTitle(TEXT("WinUpdate"));
+
+	printf_s("WinUpdate - Simple WinGet wrapper\n(c) 2026, Jan Hruza\n\n");
 
 	for (;;)
 	{
@@ -57,7 +60,7 @@ INT wmain(int argc, const wchar_t* argv[])
 			{
 				printf_s("\n");
 				CHAR packageIds[1024] = { 0 };
-				printf_s("List all package ids separated by spaces\n# ");
+				printf_s("List all package(s) to install (separated by spaces)\n# ");
 
 				if (fgets(packageIds, sizeof(packageIds), stdin) != NULL)
 				{
@@ -73,7 +76,7 @@ INT wmain(int argc, const wchar_t* argv[])
 			{
 				printf_s("\n");
 				CHAR packageIds[1024] = { 0 };
-				printf_s("List all package ids separated by spaces\n# ");
+				printf_s("List all package(s) to remove (separated by spaces)\n# ");
 
 				if (fgets(packageIds, sizeof(packageIds), stdin) != NULL)
 				{
@@ -90,6 +93,7 @@ INT wmain(int argc, const wchar_t* argv[])
 
 		default:
 			// option not found
+			printf_s("\n");
 			break;
 		}
 	}

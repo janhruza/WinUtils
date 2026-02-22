@@ -1,14 +1,19 @@
 #pragma once
-#define WIN32_LEAN_AND_MEAN
 #include <stdio.h>
 #include <Windows.h>
 #include <string.h>
 
+/// <summary>
+/// Starts a new process using the Windows shell.
+/// </summary>
+/// <param name="program">Program to be executed.</param>
+/// <param name="args">Command line arguments.</param>
+/// <returns>TRUE if the process exit code is 0, otherwise FALSE.</returns>
 static inline BOOL WuStartProcess(LPCSTR program, LPCSTR args)
 {
 	LPSTR command[80];
 	sprintf_s(command, 80, "%s %s\0", program, args);
-	return system(command);
+	return system(command) == 0 ? TRUE : FALSE;
 }
 
 /// <summary>
