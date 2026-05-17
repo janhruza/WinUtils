@@ -1,5 +1,6 @@
 #include <Windows.h>
 #include "..\inc\actions.h"
+#include "..\inc/WndHelper.h"
 
 void CopyToClipboard(const wchar_t* content)
 {
@@ -31,7 +32,8 @@ void ACClearHistory()
 	return;
 }
 
-void ACAddToHistory(const wchar_t* text)
+void ACAddToHistory(HWND hListBox, const wchar_t* text)
 {
+	WHAppendListBoxItem(hListBox, text);
 	return;
 }

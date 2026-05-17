@@ -6,5 +6,6 @@
 
 void WHCreateAppMenu(HWND hDlg);
 void WHShowContextMenu(HWND hDlg, int x, int y);
+void WHAppendListBoxItem(HWND hListBox, LPCWSTR text);
 
 #endif

@@ -5,6 +5,6 @@
 void CopyToClipboard(const wchar_t* content);
 
 void ACClearHistory();
-void ACAddToHistory(const wchar_t* text);
+void ACAddToHistory(HWND hListBox, const wchar_t* text);
 
 #endif

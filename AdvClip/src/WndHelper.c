@@ -22,3 +22,8 @@ void WHShowContextMenu(HWND hDlg, int x, int y)
 		TrackPopupMenu(hCtxMenu, TPM_LEFTALIGN | TPM_TOPALIGN, x, y, 0, hDlg, NULL);
 	}
 }
+
+void WHAppendListBoxItem(HWND hListBox, LPCWSTR text)
+{
+	SendMessage(hListBox, LB_ADDSTRING, 0, (LPARAM)text);
+}
