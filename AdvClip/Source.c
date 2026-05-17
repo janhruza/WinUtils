@@ -17,11 +17,10 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case WM_INITDIALOG:
 			WHCreateAppMenu(hDlg);
 			AddClipboardFormatListener(hDlg);
-
 			break;
 
 		case WM_CLOSE:
-			EndDialog(hDlg, 0);
+			CloseWindow(hDlg);
 			return TRUE;
 
 		case WM_RBUTTONDOWN:
@@ -38,7 +37,8 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				// cose the dialog window
 				case IDC_BTN_CLOSE:
-					EndDialog(hDlg, 0);
+					// close window
+					SendMessage(hDlg, WM_CLOSE, 0, 0);
 					break;
 
 				// copies the selected content from clipboard history
