@@ -9,9 +9,11 @@ void WHCreateAppMenu(HWND hDlg)
 	hCtxMenu = CreatePopupMenu();
 	if (hCtxMenu)
 	{
-		AppendMenu(hCtxMenu, MF_STRING, 1, L"Refresh\tF5");
+		AppendMenu(hCtxMenu, MF_STRING, ID_REFRESH, L"Refresh\tF5");
 		//AppendMenu(hCtxMenu, MF_SEPARATOR, 0x00, L"");
-		AppendMenu(hCtxMenu, MF_STRING, 2, L"Clear History\tDel");
+		AppendMenu(hCtxMenu, MF_STRING, ID_CLEAR_ALL, L"Clear History\tDel");
+		AppendMenu(hCtxMenu, MF_SEPARATOR, 0x00, L"");
+		AppendMenu(hCtxMenu, MF_STRING, ID_CLOSE_WINDOW, L"Close\tAlt+F4");
 	}
 }
 
