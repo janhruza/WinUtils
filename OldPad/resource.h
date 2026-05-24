@@ -6,6 +6,7 @@
 #define IDD_ABOUT                       103
 #define IDC_ABOUT_OK                    1001
 #define IDC_LICENSE_TEXT                1002
+#define IDC_SCROLLBAR1                  1003
 #define ID_FILE_OPEN                    40001
 #define ID_FILE_SAVE                    40003
 #define ID_FILE_SAVEAS                  40004
@@ -26,7 +27,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        105
 #define _APS_NEXT_COMMAND_VALUE         40017
-#define _APS_NEXT_CONTROL_VALUE         1003
+#define _APS_NEXT_CONTROL_VALUE         1004
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

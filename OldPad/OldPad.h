@@ -61,7 +61,6 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_INITDIALOG:
-		hBg = CreateSolidBrush(GetSysColor(COLOR_WINDOW));
 		HWND hStatic = GetDlgItem(hDlg, IDC_LICENSE_TEXT);
 		SetWindowText(hStatic, OpGetLicenseText());
 		return TRUE;
@@ -70,14 +69,14 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		EndDialog(hDlg, IDOK);
 		return TRUE;
 
-	case WM_CTLCOLORDLG:
+	/*case WM_CTLCOLORDLG:
 		return (INT_PTR)hBg;
 
 	case WM_CTLCOLORBTN:
 	case WM_CTLCOLORSTATIC:
 	{
 		return (INT_PTR)hBg;
-	}
+	}*/
 
 	case WM_COMMAND:
 		switch (wParam)
