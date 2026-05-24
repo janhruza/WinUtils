@@ -3,6 +3,7 @@
 #include <Windows.h>
 
 HMENU hCtxMenu;
+HMENU hSystemMenu;
 
 void WHCreateAppMenu(HWND hDlg)
 {
@@ -28,4 +29,15 @@ void WHShowContextMenu(HWND hDlg, int x, int y)
 void WHAppendListBoxItem(HWND hListBox, LPCWSTR text)
 {
 	SendMessage(hListBox, LB_ADDSTRING, 0, (LPARAM)text);
+}
+
+void WHCreateSystemMenu(HWND hDlg)
+{
+	hSystemMenu = GetSystemMenu(hDlg, FALSE);
+	if (hSystemMenu)
+	{
+		AppendMenu(hSystemMenu, MF_SEPARATOR, 0, L"");
+		AppendMenu(hSystemMenu, MF_STRING, ID_FORCE_EXIT, L"Force Exit\tCtrl+Q");
+		ModifyMenu(hSystemMenu, SC_CLOSE, MF_BYCOMMAND, SC_CLOSE, L"Close Window\tAlt+F4");
+	}
 }

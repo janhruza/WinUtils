@@ -80,6 +80,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		HWND hListBox;
 		LONG_PTR style;
 
+		WHCreateSystemMenu(hDlg);
 		WHCreateAppMenu(hDlg);
 		AddClipboardFormatListener(hDlg);
 
@@ -182,6 +183,22 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 
+	case WM_SYSCOMMAND:
+
+		int wmId = LOWORD(wParam);
+		switch (wmId)
+		{
+			case SC_CLOSE:
+				CloseWindow(hDlg);
+				return TRUE;
+
+			case ID_FORCE_EXIT:
+				DestroyWindow(hDlg);
+				break;
+
+			default: return FALSE;
+		}
+
 	case WM_COMMAND:
 	{
 		int wmId = LOWORD(wParam);
@@ -267,17 +284,8 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	}
 
 	case WM_LBUTTONDOWN:
-		SetFocus(hDlg);
+		//SetFocus(hDlg);
 		return TRUE;
-
-	case WM_KEYDOWN:
-	{
-		char text[256];
-		int count = (int)(lParam & 0xFFFF);
-		sprintf_s(text, 256, "Key: 0x%X, count: %d", (unsigned int)wParam, count);
-		MessageBoxA(hDlg, text, "KEY CODE", MB_OK | MB_ICONINFORMATION);
-		break;
-	}
 
 	case WM_CLIPBOARDUPDATE:
 	{
