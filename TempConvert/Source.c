@@ -27,6 +27,7 @@ HWND hCbxTempTo;
 HWND hTxtResult;
 HWND hTxtValue;
 HBRUSH hBrush;
+HINSTANCE hInst;
 
 inline static void EnableVisualStyles()
 {
@@ -181,12 +182,55 @@ inline static void AppConvertTemperature()
 	return;
 }
 
+INT_PTR CALLBACK DlgHelpProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch (msg)
+	{
+		case WM_SHOWWINDOW:
+			MessageBeep(MB_ICONINFORMATION);
+			return TRUE;
+
+	case WM_SYSCOMMAND:
+	{
+		switch (wParam)
+		{
+			case SC_CLOSE:
+				EndDialog(hDlg, TRUE);
+				return TRUE;
+
+			default: return FALSE;
+		}
+	}
+
+	case WM_COMMAND:
+	{
+		int wmId = LOWORD(wParam);
+		switch (wmId)
+		{
+			// the OK button
+			case ID_BTN_OK:
+				EndDialog(hDlg, TRUE);
+				return TRUE;
+
+			// unknown commands
+			default: return FALSE;
+		}
+	}
+
+		default: return FALSE;
+	}
+}
+
 INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
 		case WM_INITDIALOG:
 		{
+			HICON hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_APP_ICON));
+			SendMessage(hDlg, WM_SETICON, ICON_SMALL, hIcon);
+			SendMessage(hDlg, WM_SETICON, ICON_BIG, hIcon);
+			
 			hBrush = CreateSolidBrush(RGB(0xFF, 0xFF, 0xFF));
 			EnableThemeDialogTexture(hDlg, ETDT_ENABLE);
 
@@ -245,6 +289,14 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 					AppConvertTemperature();
 					return TRUE;
 				}
+
+				case ID_FILE_CLOSE:
+					DestroyWindow(hDlg);
+					return TRUE;
+
+				case ID_HELP_ABOUT:
+					DialogBox(NULL, MAKEINTRESOURCE(ID_DIALOG_HELP), hWindow, DlgHelpProc);
+					return TRUE;
 			}
 			return FALSE;
 		}
@@ -269,9 +321,26 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		case WM_CTLCOLORSTATIC:
 		case WM_CTLCOLORBTN:
+		{
 			HDC hdc = GetDC(hDlg);
 			SetBkMode(hdc, hBrush);
 			return hdc;
+		}
+
+		case WM_KEYDOWN:
+		{
+			// doesn't work
+			if (wParam == VK_F1)
+			{
+				DialogBox(NULL, MAKEINTRESOURCE(ID_DIALOG_HELP), hWindow, DlgHelpProc);
+				return TRUE;
+			}
+
+			else
+			{
+				return FALSE;
+			}
+		}
 
 		default:
 		{
@@ -285,7 +354,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpszCmdLine, int nCmdShow)
 {
-	//EnableVisualStyles();
+	hInst = hInstance;
 	DialogBox(hInstance, MAKEINTRESOURCE(IDD_FORMVIEW), NULL, DialogProc);
 	return 0;
 }
