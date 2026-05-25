@@ -11,7 +11,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 	{
 		COLORREF color = RGB(0xFF, 0xFF, 0xFF);
 		hBrush = CreateSolidBrush(color);
-		DwmSetWindowAttribute(hDlg, DWMWA_CAPTION_COLOR, &color, sizeof(COLORREF));
+		//DwmSetWindowAttribute(hDlg, DWMWA_CAPTION_COLOR, &color, sizeof(COLORREF));
 		hCbxWindow = GetDlgItem(hDlg, IDC_CBX_WINDOW);
 		hTxtOverlay = GetDlgItem(hDlg, IDC_TXT_OVERLAY);
 		EnumAllWindows();
@@ -59,14 +59,14 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 			return FALSE;
 		}
 
-		case WM_CTLCOLORDLG:
+		/*case WM_CTLCOLORDLG:
 			return (INT_PTR)hBrush;
 
 		case WM_CTLCOLORBTN:
 		case WM_CTLCOLORSTATIC:
 			HDC hdc = GetDC(hDlg);
 			SetBkColor(hdc, TRANSPARENT);
-			return hBrush;
+			return hBrush;*/
 
 		case WM_CLOSE:
 			DeleteObject(hBrush);

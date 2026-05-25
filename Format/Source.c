@@ -43,7 +43,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 
         break;
 
-    case WM_CTLCOLORDLG:
+    /*case WM_CTLCOLORDLG:
         return hbrBackground;
 
     case WM_CTLCOLORSTATIC:
@@ -53,7 +53,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
         HDC hdc = GetDC(hDlg);
         SetBkColor(hdc, hBg);
         return hdc;
-    }
+    }*/
 
     case WM_COMMAND:
     {
