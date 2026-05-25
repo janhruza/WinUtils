@@ -42,6 +42,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="src\app.manifest" />
+    <Manifest Include="app.manifest" />
   </ItemGroup>
 </Project>
