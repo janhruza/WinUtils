@@ -39,6 +39,14 @@ INT_PTR CALLBACK DlgNewTaskProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
 					EndDialog(hDlg, pTask);
 					return TRUE;
 
+				case IDC_TXT_TITLE:
+				{
+					// enable/disable the 'Add' button based on the title text existence
+					size_t length = SendDlgItemMessage(hDlg, IDC_TXT_TITLE, EM_LINELENGTH, 0, 0);
+					EnableWindow(GetDlgItem(hDlg, IDC_BTN_ADD), length == 0 ? FALSE : TRUE);
+					return TRUE;
+				}
+
 				default: return FALSE;
 			}
 

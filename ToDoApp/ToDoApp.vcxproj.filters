@@ -44,4 +44,7 @@
   <ItemGroup>
     <Manifest Include="app.manifest" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\TODO.md" />
+  </ItemGroup>
 </Project>
