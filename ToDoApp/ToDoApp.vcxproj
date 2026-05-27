@@ -145,10 +145,12 @@
   <ItemGroup>
     <ClCompile Include="Source.c" />
     <ClCompile Include="src\Dialog\DlgNewTask.c" />
+    <ClCompile Include="src\TaskDb.c" />
     <ClCompile Include="src\TaskItem.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\Dialog\DlgNewTask.h" />
+    <ClInclude Include="inc\TaskDb.h" />
     <ClInclude Include="inc\TaskItem.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
