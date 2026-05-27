@@ -51,6 +51,6 @@
     <Manifest Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\TODO.md" />
+    <None Include="TODO.md" />
   </ItemGroup>
 </Project>

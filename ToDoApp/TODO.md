@@ -8,5 +8,5 @@ Features
 - [x] Add new Task
 - [x] Display task's details
 - [x] Remove selected task
-- [ ] Store created tasks
-- [ ] Load previously stored tasks
+- [x] Store created tasks
+- [x] Load previously stored tasks
