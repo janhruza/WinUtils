@@ -12,7 +12,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				case IDC_BTN_NEW:
 					PTaskItem result = DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_DIALOG_NEWTASK), hDlg, DlgNewTaskProc);
-					if (result != NULL)
+					if (result != NULL && result != IDCANCEL)
 					{
 						SendDlgItemMessage(hDlg, IDC_LIST_TASKS, LB_ADDSTRING, 0, (LPARAM)result->szTitle);
 						SendDlgItemMessage(hDlg, IDC_LIST_TASKS, LB_SETITEMDATA, SendDlgItemMessage(hDlg, IDC_LIST_TASKS, LB_GETCOUNT, 0, 0) - 1, (LPARAM)result);

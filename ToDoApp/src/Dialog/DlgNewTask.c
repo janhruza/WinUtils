@@ -28,7 +28,7 @@ INT_PTR CALLBACK DlgNewTaskProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
 
 				case IDC_BTN_ADD:
 					PTaskItem pTask = CreateTaskFromDialog(hDlg);
-					if (!pTask)
+					if (pTask == NULL)
 					{
 						// task not created
 						MessageBox(hDlg, TEXT("Failed to create task. Please try again."), TEXT("Error"), MB_ICONERROR | MB_OK);

@@ -7,7 +7,9 @@ PTaskItem CreateTaskFromDialog(HWND hDlg)
 {
 	if (!hDlg) return NULL;
 	PTaskItem pTaskItem = (PTaskItem)malloc(sizeof(TaskItem));
-	if (!pTaskItem) return NULL;
+	if (pTaskItem == NULL) return NULL;
+
+	memset(pTaskItem, 0, sizeof(TaskItem));
 	GetDlgItemText(hDlg, IDC_TXT_TITLE, pTaskItem->szTitle, sizeof(pTaskItem->szTitle));
 	GetDlgItemText(hDlg, IDC_TXT_DESC, pTaskItem->szDescription, sizeof(pTaskItem->szDescription));
 
