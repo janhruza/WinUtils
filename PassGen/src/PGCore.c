@@ -10,7 +10,9 @@ LPWSTR lpszSpecials = L".,:?!;-+/*\"\'/()[]{}<>|&@#";
 
 int PgGetRandomIndex(LPWSTR lpChars)
 {
+	if (lpChars == NULL) return -1;
 	int len = lstrlen(lpChars);
+	if (len == 0) return -1;
 	return rand() % len;
 }
 
@@ -42,7 +44,14 @@ BOOL PgGeneratePassword(HWND hOut, int len, int charTypes)
 	size_t totalAllowed = wcslen(szAllowedChars);
 	for (int i = 0; i < len; i++)
 	{
-		arr[i] = szAllowedChars[PgGetRandomIndex(szAllowedChars)];
+		int idx = PgGetRandomIndex(szAllowedChars);
+		if (idx == -1)
+		{
+			// critical, array empty
+			return FALSE;
+		}
+
+		arr[i] = szAllowedChars[idx];
 	}
 
 	// null-terminate the output

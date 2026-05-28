@@ -61,7 +61,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, int msg, WPARAM wParam, LPARAM lParam)
 					// get the char sets
 					int cModes = CTYPE_NONE;
 
-					// IsDlgButtonChecked vrací BST_CHECKED (1), pokud je checkbox zaškrtnutý
+					// IsDlgButtonChecked returns BST_CHECKED
 					if (IsDlgButtonChecked(hDlg, IDC_CHK_LOWERCASE) == BST_CHECKED) {
 						cModes |= CTYPE_LOWER;
 					}
@@ -76,6 +76,10 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, int msg, WPARAM wParam, LPARAM lParam)
 					}
 
 					BOOL genRes = PgGeneratePassword(hOut, len, cModes);
+
+					HWND hCpy = GetDlgItem(hDlg, IDC_BUTTON_COPY);
+					EnableWindow(hCpy, genRes);
+
 					if (genRes == FALSE)
 					{
 						MessageBox(hDlg, TEXT("Unable to generate password."), TEXT("ERROR"), MB_OK | MB_ICONERROR);
@@ -84,14 +88,42 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, int msg, WPARAM wParam, LPARAM lParam)
 					return TRUE;
 				}
 
-				case IDC_EDIT_LENGTH:
+				case IDC_BUTTON_COPY:
 				{
-					// password length
-					return TRUE;
-				}
+					HWND hPass = GetDlgItem(hDlg, IDC_EDIT_PASSWORD);
 
-				case IDC_UPDOWN_LENGTH:
-				{
+					// load the password first
+					WCHAR szText[PASS_MAXLEN + 1] = { 0 };
+					GetWindowText(hPass, szText, PASS_MAXLEN + 1);
+
+					size_t len = wcslen(szText);
+					if (len == 0) return TRUE;
+
+					// 2. Otevření schránky
+					if (OpenClipboard(hDlg)) {
+						EmptyClipboard(); // we need to empty the CB first
+
+						// memory allocation
+						size_t bytesToAllocate = (len + 1) * sizeof(WCHAR);
+						HGLOBAL hClipboardMem = GlobalAlloc(GMEM_MOVEABLE, bytesToAllocate);
+
+						if (hClipboardMem != NULL) {
+							// we need to lock the memory in order to write into it
+							LPWSTR lpszBuffer = (LPWSTR)GlobalLock(hClipboardMem);
+							if (lpszBuffer != NULL) {
+								wcscpy_s(lpszBuffer, len + 1, szText);
+								GlobalUnlock(hClipboardMem); // we need to unlock the memory
+
+								// set text as unicode string
+								SetClipboardData(CF_UNICODETEXT, hClipboardMem);
+							}
+						}
+
+						CloseClipboard();
+
+						// NOTE: we don't need to free the CB ourselves, WIndows will do that
+						MessageBox(hDlg, TEXT("Password copied to clipboard!"), TEXT("Copy Password"), MB_OK | MB_ICONINFORMATION);
+					}
 
 					return TRUE;
 				}
