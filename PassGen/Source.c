@@ -57,6 +57,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, int msg, WPARAM wParam, LPARAM lParam)
 					WCHAR text[10];
 					GetWindowText(hEditLen, text, 10);
 					int len = _wtoi(text);
+					if (len == 0 || text == NULL) return FALSE;
 
 					// get the char sets
 					int cModes = CTYPE_NONE;
