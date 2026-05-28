@@ -7,6 +7,21 @@
 #include <time.h>
 #include <CommCtrl.h>
 
+#define MENU_REFRESH	1100
+
+void ResetFields(HWND hDlg)
+{
+	if (hDlg == NULL) return;
+	CheckDlgButton(hDlg, IDC_CHK_LOWERCASE, TRUE);
+	CheckDlgButton(hDlg, IDC_CHK_UPPERCASE, FALSE);
+	CheckDlgButton(hDlg, IDC_CHK_NUMBERS, FALSE);
+	CheckDlgButton(hDlg, IDC_CHK_SPECIAL, FALSE);
+	EnableWindow(GetDlgItem(hDlg, IDC_BUTTON_COPY), FALSE);
+	SetWindowText(GetDlgItem(hDlg, IDC_EDIT_PASSWORD), L"");
+	SetDlgItemInt(hDlg, IDC_EDIT_LENGTH, 16, FALSE);
+	return;
+}
+
 INT_PTR CALLBACK DlgProc(HWND hDlg, int msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -18,9 +33,9 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, int msg, WPARAM wParam, LPARAM lParam)
 			HWND hUpDown = GetDlgItem(hDlg, IDC_UPDOWN_LENGTH);
 			SendMessage(hUpDown, UDM_SETBUDDY, (WPARAM)hEdit, 0);
 			SendMessage(hUpDown, UDM_SETRANGE32, 6, 64);
-			SetDlgItemInt(hDlg, IDC_EDIT_LENGTH, 16, FALSE);
 
-			CheckDlgButton(hDlg, IDC_CHK_LOWERCASE, TRUE);
+			// reset field values
+			ResetFields(hDlg);
 			return TRUE;
 		}
 
@@ -43,10 +58,18 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, int msg, WPARAM wParam, LPARAM lParam)
 			int wmId = LOWORD(wParam);
 			switch (wmId)
 			{
-				// the 'Cancel' button
+				// the 'Cancel' button or
+				// the close context menu item
+				case IDCLOSE:
 				case IDCANCEL:
 					EndDialog(hDlg, IDCANCEL);
 					return TRUE;
+
+				case MENU_REFRESH:
+				{
+					ResetFields(hDlg);
+					return TRUE;
+				}
 
 				// the 'Generate' button
 				case IDOK:
@@ -130,6 +153,24 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, int msg, WPARAM wParam, LPARAM lParam)
 				}
 			}
 		}
+
+		case WM_CONTEXTMENU:
+		{
+			// allow only for our dialog
+			if (hDlg != (HWND)wParam) return FALSE;
+
+			HMENU hMenu = CreatePopupMenu();
+			AppendMenu(hMenu, MF_STRING, MENU_REFRESH, TEXT("Refresh\tF5"));
+			AppendMenu(hMenu, MF_SEPARATOR, NULL, NULL);
+			AppendMenu(hMenu, MF_STRING, IDCLOSE, TEXT("Close\tAlt+F4"));
+
+			TrackPopupMenu(hMenu, TPM_LEFTALIGN, LOWORD(lParam), HIWORD(lParam), NULL, hDlg, NULL);
+			DestroyMenu(hMenu);
+			
+			return TRUE;
+		}
+
+		default: return FALSE;
 	}
 
 	return FALSE;
