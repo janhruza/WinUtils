@@ -17,7 +17,7 @@ void ResetFields(HWND hDlg)
 	CheckDlgButton(hDlg, IDC_CHK_NUMBERS, FALSE);
 	CheckDlgButton(hDlg, IDC_CHK_SPECIAL, FALSE);
 	EnableWindow(GetDlgItem(hDlg, IDC_BUTTON_COPY), FALSE);
-	SetWindowText(GetDlgItem(hDlg, IDC_EDIT_PASSWORD), L"");
+	SetWindowText(GetDlgItem(hDlg, IDC_EDIT_PASSWORD), NULL);
 	SetDlgItemInt(hDlg, IDC_EDIT_LENGTH, 16, FALSE);
 	return;
 }
@@ -157,7 +157,10 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, int msg, WPARAM wParam, LPARAM lParam)
 		case WM_CONTEXTMENU:
 		{
 			// allow only for our dialog
-			if (hDlg != (HWND)wParam) return FALSE;
+			if (hDlg != (HWND)wParam)
+			{
+				return DefWindowProc(hDlg, msg, wParam, lParam);
+			}
 
 			HMENU hMenu = CreatePopupMenu();
 			AppendMenu(hMenu, MF_STRING, MENU_REFRESH, TEXT("Refresh\tF5"));
