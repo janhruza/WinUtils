@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <stdio.h>
 
-int wmain(int argc, const WCHAR *argv[])
+int wmain(int argc, const WCHAR* argv[])
 {
 	SYSTEMTIME ctm;
 	GetLocalTime(&ctm);

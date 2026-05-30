@@ -35,7 +35,7 @@ int main(int argc, const char* argv[])
 
 		printf_s("Enter process name\n# ");
 		(void)scanf_s("%s", &processName, MAX_PATH);
-		
+
 		if (BeginSession(processName, &session) != MU_OK)
 		{
 			printf_s("Unable to initialize the session. Make sure the process \'%s\' exists.\nTry again? [Y/n]: ", processName);

@@ -16,43 +16,43 @@ INT_PTR CALLBACK DlgNewTaskProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
 	UNREFERENCED_PARAMETER(lParam);
 	switch (message)
 	{
-		case WM_INITDIALOG:
+	case WM_INITDIALOG:
+		return (INT_PTR)TRUE;
+
+	case WM_COMMAND:
+		switch (LOWORD(wParam))
+		{
+		case IDCANCEL:
+			EndDialog(hDlg, LOWORD(wParam));
 			return (INT_PTR)TRUE;
 
-		case WM_COMMAND:
-			switch (LOWORD(wParam))
+		case IDC_BTN_ADD:
+			PTaskItem pTask = CreateTaskFromDialog(hDlg);
+			if (pTask == NULL)
 			{
-				case IDCANCEL:
-					EndDialog(hDlg, LOWORD(wParam));
-					return (INT_PTR)TRUE;
-
-				case IDC_BTN_ADD:
-					PTaskItem pTask = CreateTaskFromDialog(hDlg);
-					if (pTask == NULL)
-					{
-						// task not created
-						MessageBox(hDlg, TEXT("Failed to create task. Please try again."), TEXT("Error"), MB_ICONERROR | MB_OK);
-						return FALSE;
-					}
-
-					// task created
-					EndDialog(hDlg, pTask);
-					return TRUE;
-
-				case IDC_TXT_TITLE:
-				{
-					// enable/disable the 'Add' button based on the title text existence
-					size_t length = SendDlgItemMessage(hDlg, IDC_TXT_TITLE, EM_LINELENGTH, 0, 0);
-					EnableWindow(GetDlgItem(hDlg, IDC_BTN_ADD), length == 0 ? FALSE : TRUE);
-					return TRUE;
-				}
-
-				default: return FALSE;
+				// task not created
+				MessageBox(hDlg, TEXT("Failed to create task. Please try again."), TEXT("Error"), MB_ICONERROR | MB_OK);
+				return FALSE;
 			}
 
-		case WM_CLOSE:
-			EndDialog(hDlg, NULL);
-			return (INT_PTR)TRUE;
+			// task created
+			EndDialog(hDlg, pTask);
+			return TRUE;
+
+		case IDC_TXT_TITLE:
+		{
+			// enable/disable the 'Add' button based on the title text existence
+			size_t length = SendDlgItemMessage(hDlg, IDC_TXT_TITLE, EM_LINELENGTH, 0, 0);
+			EnableWindow(GetDlgItem(hDlg, IDC_BTN_ADD), length == 0 ? FALSE : TRUE);
+			return TRUE;
+		}
+
+		default: return FALSE;
+		}
+
+	case WM_CLOSE:
+		EndDialog(hDlg, NULL);
+		return (INT_PTR)TRUE;
 	}
 
 	return (INT_PTR)FALSE;

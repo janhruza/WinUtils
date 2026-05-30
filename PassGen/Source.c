@@ -26,154 +26,154 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, int msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-		case WM_INITDIALOG:
-		{
-			// initializes the UI
-			HWND hEdit = GetDlgItem(hDlg, IDC_EDIT_LENGTH);
-			HWND hUpDown = GetDlgItem(hDlg, IDC_UPDOWN_LENGTH);
-			SendMessage(hUpDown, UDM_SETBUDDY, (WPARAM)hEdit, 0);
-			SendMessage(hUpDown, UDM_SETRANGE32, 6, 64);
+	case WM_INITDIALOG:
+	{
+		// initializes the UI
+		HWND hEdit = GetDlgItem(hDlg, IDC_EDIT_LENGTH);
+		HWND hUpDown = GetDlgItem(hDlg, IDC_UPDOWN_LENGTH);
+		SendMessage(hUpDown, UDM_SETBUDDY, (WPARAM)hEdit, 0);
+		SendMessage(hUpDown, UDM_SETRANGE32, 6, 64);
 
-			// reset field values
+		// reset field values
+		ResetFields(hDlg);
+		return TRUE;
+	}
+
+	case WM_CLOSE:
+		EndDialog(hDlg, IDCLOSE);
+		return TRUE;
+
+	case WM_SYSCOMMAND:
+	{
+		switch (LOWORD(wParam))
+		{
+		case SC_CLOSE:
+			SendMessage(hDlg, WM_CLOSE, 0, 0);
+			return TRUE;
+		}
+	}
+
+	case WM_COMMAND:
+	{
+		int wmId = LOWORD(wParam);
+		switch (wmId)
+		{
+			// the 'Cancel' button or
+			// the close context menu item
+		case IDCLOSE:
+		case IDCANCEL:
+			EndDialog(hDlg, IDCANCEL);
+			return TRUE;
+
+		case MENU_REFRESH:
+		{
 			ResetFields(hDlg);
 			return TRUE;
 		}
 
-		case WM_CLOSE:
-			EndDialog(hDlg, IDCLOSE);
-			return TRUE;
-
-		case WM_SYSCOMMAND:
+		// the 'Generate' button
+		case IDOK:
 		{
-			switch (LOWORD(wParam))
-			{
-				case SC_CLOSE:
-					SendMessage(hDlg, WM_CLOSE, 0, 0);
-					return TRUE;
+			// get the password length
+			HWND hOut = GetDlgItem(hDlg, IDC_EDIT_PASSWORD);
+			HWND hEditLen = GetDlgItem(hDlg, IDC_EDIT_LENGTH);
+			WCHAR text[10];
+			GetWindowText(hEditLen, text, 10);
+			int len = _wtoi(text);
+			if (len == 0 || text == NULL) return FALSE;
+
+			// get the char sets
+			int cModes = CTYPE_NONE;
+
+			// IsDlgButtonChecked returns BST_CHECKED
+			if (IsDlgButtonChecked(hDlg, IDC_CHK_LOWERCASE) == BST_CHECKED) {
+				cModes |= CTYPE_LOWER;
 			}
-		}
-
-		case WM_COMMAND:
-		{
-			int wmId = LOWORD(wParam);
-			switch (wmId)
-			{
-				// the 'Cancel' button or
-				// the close context menu item
-				case IDCLOSE:
-				case IDCANCEL:
-					EndDialog(hDlg, IDCANCEL);
-					return TRUE;
-
-				case MENU_REFRESH:
-				{
-					ResetFields(hDlg);
-					return TRUE;
-				}
-
-				// the 'Generate' button
-				case IDOK:
-				{
-					// get the password length
-					HWND hOut = GetDlgItem(hDlg, IDC_EDIT_PASSWORD);
-					HWND hEditLen = GetDlgItem(hDlg, IDC_EDIT_LENGTH);
-					WCHAR text[10];
-					GetWindowText(hEditLen, text, 10);
-					int len = _wtoi(text);
-					if (len == 0 || text == NULL) return FALSE;
-
-					// get the char sets
-					int cModes = CTYPE_NONE;
-
-					// IsDlgButtonChecked returns BST_CHECKED
-					if (IsDlgButtonChecked(hDlg, IDC_CHK_LOWERCASE) == BST_CHECKED) {
-						cModes |= CTYPE_LOWER;
-					}
-					if (IsDlgButtonChecked(hDlg, IDC_CHK_UPPERCASE) == BST_CHECKED) {
-						cModes |= CTYPE_UPPER;
-					}
-					if (IsDlgButtonChecked(hDlg, IDC_CHK_NUMBERS) == BST_CHECKED) {
-						cModes |= CTYPE_NUM;
-					}
-					if (IsDlgButtonChecked(hDlg, IDC_CHK_SPECIAL) == BST_CHECKED) {
-						cModes |= CTYPE_SPECIAL;
-					}
-
-					BOOL genRes = PgGeneratePassword(hOut, len, cModes);
-
-					HWND hCpy = GetDlgItem(hDlg, IDC_BUTTON_COPY);
-					EnableWindow(hCpy, genRes);
-
-					if (genRes == FALSE)
-					{
-						MessageBox(hDlg, TEXT("Unable to generate password."), TEXT("ERROR"), MB_OK | MB_ICONERROR);
-					}
-
-					return TRUE;
-				}
-
-				case IDC_BUTTON_COPY:
-				{
-					HWND hPass = GetDlgItem(hDlg, IDC_EDIT_PASSWORD);
-
-					// load the password first
-					WCHAR szText[PASS_MAXLEN + 1] = { 0 };
-					GetWindowText(hPass, szText, PASS_MAXLEN + 1);
-
-					size_t len = wcslen(szText);
-					if (len == 0) return TRUE;
-
-					// 2. Otevření schránky
-					if (OpenClipboard(hDlg)) {
-						EmptyClipboard(); // we need to empty the CB first
-
-						// memory allocation
-						size_t bytesToAllocate = (len + 1) * sizeof(WCHAR);
-						HGLOBAL hClipboardMem = GlobalAlloc(GMEM_MOVEABLE, bytesToAllocate);
-
-						if (hClipboardMem != NULL) {
-							// we need to lock the memory in order to write into it
-							LPWSTR lpszBuffer = (LPWSTR)GlobalLock(hClipboardMem);
-							if (lpszBuffer != NULL) {
-								wcscpy_s(lpszBuffer, len + 1, szText);
-								GlobalUnlock(hClipboardMem); // we need to unlock the memory
-
-								// set text as unicode string
-								SetClipboardData(CF_UNICODETEXT, hClipboardMem);
-							}
-						}
-
-						CloseClipboard();
-
-						// NOTE: we don't need to free the CB ourselves, WIndows will do that
-						MessageBox(hDlg, TEXT("Password copied to clipboard!"), TEXT("Copy Password"), MB_OK | MB_ICONINFORMATION);
-					}
-
-					return TRUE;
-				}
+			if (IsDlgButtonChecked(hDlg, IDC_CHK_UPPERCASE) == BST_CHECKED) {
+				cModes |= CTYPE_UPPER;
 			}
-		}
-
-		case WM_CONTEXTMENU:
-		{
-			// allow only for our dialog
-			if (hDlg != (HWND)wParam)
-			{
-				return DefWindowProc(hDlg, msg, wParam, lParam);
+			if (IsDlgButtonChecked(hDlg, IDC_CHK_NUMBERS) == BST_CHECKED) {
+				cModes |= CTYPE_NUM;
+			}
+			if (IsDlgButtonChecked(hDlg, IDC_CHK_SPECIAL) == BST_CHECKED) {
+				cModes |= CTYPE_SPECIAL;
 			}
 
-			HMENU hMenu = CreatePopupMenu();
-			AppendMenu(hMenu, MF_STRING, MENU_REFRESH, TEXT("Refresh\tF5"));
-			AppendMenu(hMenu, MF_SEPARATOR, NULL, NULL);
-			AppendMenu(hMenu, MF_STRING, IDCLOSE, TEXT("Close\tAlt+F4"));
+			BOOL genRes = PgGeneratePassword(hOut, len, cModes);
 
-			TrackPopupMenu(hMenu, TPM_LEFTALIGN, LOWORD(lParam), HIWORD(lParam), NULL, hDlg, NULL);
-			DestroyMenu(hMenu);
-			
+			HWND hCpy = GetDlgItem(hDlg, IDC_BUTTON_COPY);
+			EnableWindow(hCpy, genRes);
+
+			if (genRes == FALSE)
+			{
+				MessageBox(hDlg, TEXT("Unable to generate password."), TEXT("ERROR"), MB_OK | MB_ICONERROR);
+			}
+
 			return TRUE;
 		}
 
-		default: return FALSE;
+		case IDC_BUTTON_COPY:
+		{
+			HWND hPass = GetDlgItem(hDlg, IDC_EDIT_PASSWORD);
+
+			// load the password first
+			WCHAR szText[PASS_MAXLEN + 1] = { 0 };
+			GetWindowText(hPass, szText, PASS_MAXLEN + 1);
+
+			size_t len = wcslen(szText);
+			if (len == 0) return TRUE;
+
+			// 2. Otevření schránky
+			if (OpenClipboard(hDlg)) {
+				EmptyClipboard(); // we need to empty the CB first
+
+				// memory allocation
+				size_t bytesToAllocate = (len + 1) * sizeof(WCHAR);
+				HGLOBAL hClipboardMem = GlobalAlloc(GMEM_MOVEABLE, bytesToAllocate);
+
+				if (hClipboardMem != NULL) {
+					// we need to lock the memory in order to write into it
+					LPWSTR lpszBuffer = (LPWSTR)GlobalLock(hClipboardMem);
+					if (lpszBuffer != NULL) {
+						wcscpy_s(lpszBuffer, len + 1, szText);
+						GlobalUnlock(hClipboardMem); // we need to unlock the memory
+
+						// set text as unicode string
+						SetClipboardData(CF_UNICODETEXT, hClipboardMem);
+					}
+				}
+
+				CloseClipboard();
+
+				// NOTE: we don't need to free the CB ourselves, WIndows will do that
+				MessageBox(hDlg, TEXT("Password copied to clipboard!"), TEXT("Copy Password"), MB_OK | MB_ICONINFORMATION);
+			}
+
+			return TRUE;
+		}
+		}
+	}
+
+	case WM_CONTEXTMENU:
+	{
+		// allow only for our dialog
+		if (hDlg != (HWND)wParam)
+		{
+			return DefWindowProc(hDlg, msg, wParam, lParam);
+		}
+
+		HMENU hMenu = CreatePopupMenu();
+		AppendMenu(hMenu, MF_STRING, MENU_REFRESH, TEXT("Refresh\tF5"));
+		AppendMenu(hMenu, MF_SEPARATOR, NULL, NULL);
+		AppendMenu(hMenu, MF_STRING, IDCLOSE, TEXT("Close\tAlt+F4"));
+
+		TrackPopupMenu(hMenu, TPM_LEFTALIGN, LOWORD(lParam), HIWORD(lParam), NULL, hDlg, NULL);
+		DestroyMenu(hMenu);
+
+		return TRUE;
+	}
+
+	default: return FALSE;
 	}
 
 	return FALSE;

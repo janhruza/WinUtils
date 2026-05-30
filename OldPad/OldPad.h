@@ -69,14 +69,14 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		EndDialog(hDlg, IDOK);
 		return TRUE;
 
-	/*case WM_CTLCOLORDLG:
-		return (INT_PTR)hBg;
+		/*case WM_CTLCOLORDLG:
+			return (INT_PTR)hBg;
 
-	case WM_CTLCOLORBTN:
-	case WM_CTLCOLORSTATIC:
-	{
-		return (INT_PTR)hBg;
-	}*/
+		case WM_CTLCOLORBTN:
+		case WM_CTLCOLORSTATIC:
+		{
+			return (INT_PTR)hBg;
+		}*/
 
 	case WM_COMMAND:
 		switch (wParam)

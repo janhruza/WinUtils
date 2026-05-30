@@ -188,15 +188,15 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		int wmId = LOWORD(wParam);
 		switch (wmId)
 		{
-			case SC_CLOSE:
-				CloseWindow(hDlg);
-				return TRUE;
+		case SC_CLOSE:
+			CloseWindow(hDlg);
+			return TRUE;
 
-			case ID_FORCE_EXIT:
-				DestroyWindow(hDlg);
-				break;
+		case ID_FORCE_EXIT:
+			DestroyWindow(hDlg);
+			break;
 
-			default: return FALSE;
+		default: return FALSE;
 		}
 
 	case WM_COMMAND:

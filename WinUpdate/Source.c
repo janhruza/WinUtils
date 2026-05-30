@@ -67,76 +67,76 @@ INT wmain(int argc, const wchar_t* argv[])
 
 		case 3:
 			// install new package(s)
+		{
+			printf_s("\n");
+			CHAR packageIds[1024] = { 0 };
+			printf_s("List all package(s) to install (separated by spaces)\n# ");
+
+			if (fgets(packageIds, sizeof(packageIds), stdin) != NULL)
 			{
-				printf_s("\n");
-				CHAR packageIds[1024] = { 0 };
-				printf_s("List all package(s) to install (separated by spaces)\n# ");
-
-				if (fgets(packageIds, sizeof(packageIds), stdin) != NULL)
-				{
-					WuInstallPackages(packageIds);
-				}
-
-				printf_s("\n");
+				WuInstallPackages(packageIds);
 			}
-			break;
+
+			printf_s("\n");
+		}
+		break;
 
 		case 4:
 			// remove package(s)
+		{
+			printf_s("\n");
+			CHAR packageIds[1024] = { 0 };
+			printf_s("List all package(s) to remove (separated by spaces)\n# ");
+
+			if (fgets(packageIds, sizeof(packageIds), stdin) != NULL)
 			{
-				printf_s("\n");
-				CHAR packageIds[1024] = { 0 };
-				printf_s("List all package(s) to remove (separated by spaces)\n# ");
-
-				if (fgets(packageIds, sizeof(packageIds), stdin) != NULL)
-				{
-					WuRemovePackages(packageIds);
-				}
-
-				printf_s("\n");
+				WuRemovePackages(packageIds);
 			}
-			break;
+
+			printf_s("\n");
+		}
+		break;
 
 		case 5:
 			// open the config file
+		{
+			printf_s("\nWinUpdate: Opening the config file... ");
+			if (WuOpenConfig() == TRUE)
 			{
-				printf_s("\nWinUpdate: Opening the config file... ");
-				if (WuOpenConfig() == TRUE)
+				printf_s("\nWinUpdate: Config file opened!\n\n");
+			}
+
+			else
+			{
+				printf_s("\nWinUpdate: Unable to start process.\n\n");
+			}
+		}
+		break;
+
+		case 6:
+			// run a custom command
+		{
+			printf_s("\nEnter custom WinGet command\n# winget ");
+			CHAR buf[256] = { 0 };
+
+			if (fgets(buf, 255, stdin) != NULL)
+			{
+				printf_s("\n");
+				if (WuCustomCommand(buf) == TRUE)
 				{
-					printf_s("\nWinUpdate: Config file opened!\n\n");
+					printf_s("Command completed successfully.\n");
 				}
 
 				else
 				{
-					printf_s("\nWinUpdate: Unable to start process.\n\n");
+					printf_s("Command failed.\n");
 				}
+
+				printf_s("\n");
 			}
-			break;
 
-		case 6:
-			// run a custom command
-			{
-				printf_s("\nEnter custom WinGet command\n# winget ");
-				CHAR buf[256] = { 0 };
-
-				if (fgets(buf, 255, stdin) != NULL)
-				{
-					printf_s("\n");
-					if (WuCustomCommand(buf) == TRUE)
-					{
-						printf_s("Command completed successfully.\n");
-					}
-
-					else
-					{
-						printf_s("Command failed.\n");
-					}
-
-					printf_s("\n");
-				}
-				
-			}
-			break;
+		}
+		break;
 
 		case 0:
 			// break from the loop and exit the program
@@ -149,6 +149,6 @@ INT wmain(int argc, const wchar_t* argv[])
 		}
 	}
 
-	processExit:
+processExit:
 	return EXIT_SUCCESS;
 }

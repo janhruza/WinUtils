@@ -6,8 +6,8 @@
 #include "TaskItem.h"
 
 typedef struct TaskDB_s {
-    long int nCount;
-    PTaskItem* tasks;
+	long int nCount;
+	PTaskItem* tasks;
 } TaskDB, * PTaskDb;
 
 BOOL AddTaskToDb(PTaskDb db, PTaskItem newTask);

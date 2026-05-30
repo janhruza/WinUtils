@@ -64,48 +64,48 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 			// cancel button
-			case ID_ITEM_EXIT:
-			case IDC_BTN_CANCEL:
-				SendMessage(hDlg, WM_CLOSE, 0, 0);
-				break;
-
-			// send keys button
-			case IDC_BTN_SEND:
-			{
-				// check for window
-				int idx = SendMessage(hCbxWindows, CB_GETCURSEL, 0, 0);
-				if (idx == CB_ERR)
-				{
-					// no item selected
-					break;
-				}
-
-				// get window
-				HWND hWnd = (HWND)SendMessage(hCbxWindows, CB_GETITEMDATA, idx, 0);
-				if (hWnd == CB_ERR)
-				{
-					// window not found
-					break;
-				}
-
-				// get text (input data)
-				WCHAR pData[MAX_PATH];
-				GetWindowText(hTxtInput, pData, MAX_PATH);
-
-				// fill structure data
-				hwTarget.hWnd = hWnd;
-				hwTarget.keys = pData;
-
-				// send keys
-				SendKeys(&hwTarget);
-			}
+		case ID_ITEM_EXIT:
+		case IDC_BTN_CANCEL:
+			SendMessage(hDlg, WM_CLOSE, 0, 0);
 			break;
 
-			// refresh windows list
-			case ID_ITEM_REFRESH:
-			case IDC_BTN_REFRESH:
-				RefreshWindowList();
+			// send keys button
+		case IDC_BTN_SEND:
+		{
+			// check for window
+			int idx = SendMessage(hCbxWindows, CB_GETCURSEL, 0, 0);
+			if (idx == CB_ERR)
+			{
+				// no item selected
 				break;
+			}
+
+			// get window
+			HWND hWnd = (HWND)SendMessage(hCbxWindows, CB_GETITEMDATA, idx, 0);
+			if (hWnd == CB_ERR)
+			{
+				// window not found
+				break;
+			}
+
+			// get text (input data)
+			WCHAR pData[MAX_PATH];
+			GetWindowText(hTxtInput, pData, MAX_PATH);
+
+			// fill structure data
+			hwTarget.hWnd = hWnd;
+			hwTarget.keys = pData;
+
+			// send keys
+			SendKeys(&hwTarget);
+		}
+		break;
+
+		// refresh windows list
+		case ID_ITEM_REFRESH:
+		case IDC_BTN_REFRESH:
+			RefreshWindowList();
+			break;
 		}
 
 		// WM_COMMAND handled
@@ -136,7 +136,7 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			RefreshWindowList();
 			break;
 
-		break;
+			break;
 		}
 	}
 	break;

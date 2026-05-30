@@ -91,27 +91,27 @@ inline static void AppConvertTemperature()
 		// convert from Celsius
 		switch (iTempTo)
 		{
-			case TEMP_INDEX_C:
-				// C to C
-				DrawResult(TEMPERATURE_CELSIUS, TEMPERATURE_CELSIUS, dValue, dValue);
-				break;
+		case TEMP_INDEX_C:
+			// C to C
+			DrawResult(TEMPERATURE_CELSIUS, TEMPERATURE_CELSIUS, dValue, dValue);
+			break;
 
-			case TEMP_INDEX_F:
-				// C to F
-				dResult = TcCTOF(dValue);
-				DrawResult(TEMPERATURE_CELSIUS, TEMPERATURE_FAHRENHEIT, dValue, dResult);
-				break;
+		case TEMP_INDEX_F:
+			// C to F
+			dResult = TcCTOF(dValue);
+			DrawResult(TEMPERATURE_CELSIUS, TEMPERATURE_FAHRENHEIT, dValue, dResult);
+			break;
 
-			case TEMP_INDEX_K:
-				// C to K
-				dResult = TcCTOK(dValue);
-				DrawResult(TEMPERATURE_CELSIUS, TEMPERATURE_KELVIN, dValue, dResult);
-				break;
+		case TEMP_INDEX_K:
+			// C to K
+			dResult = TcCTOK(dValue);
+			DrawResult(TEMPERATURE_CELSIUS, TEMPERATURE_KELVIN, dValue, dResult);
+			break;
 
-			default:
-				// invalid TempTo index
-				AppInvalidIndex(iTempFrom, iTempTo);
-				break;
+		default:
+			// invalid TempTo index
+			AppInvalidIndex(iTempFrom, iTempTo);
+			break;
 		}
 	}
 
@@ -120,27 +120,27 @@ inline static void AppConvertTemperature()
 		// convert from Fahrenheit
 		switch (iTempTo)
 		{
-			case TEMP_INDEX_C:
-				// F to C
-				dResult = TcFTOC(dValue);
-				DrawResult(TEMPERATURE_FAHRENHEIT, TEMPERATURE_CELSIUS, dValue, dResult);
-				break;
+		case TEMP_INDEX_C:
+			// F to C
+			dResult = TcFTOC(dValue);
+			DrawResult(TEMPERATURE_FAHRENHEIT, TEMPERATURE_CELSIUS, dValue, dResult);
+			break;
 
-			case TEMP_INDEX_F:
-				// F to F
-				DrawResult(TEMPERATURE_FAHRENHEIT, TEMPERATURE_FAHRENHEIT, dValue, dValue);
-				break;
+		case TEMP_INDEX_F:
+			// F to F
+			DrawResult(TEMPERATURE_FAHRENHEIT, TEMPERATURE_FAHRENHEIT, dValue, dValue);
+			break;
 
-			case TEMP_INDEX_K:
-				// F to K
-				dResult = TcFTOK(dValue);
-				DrawResult(TEMPERATURE_FAHRENHEIT, TEMPERATURE_KELVIN, dValue, dResult);
-				break;
+		case TEMP_INDEX_K:
+			// F to K
+			dResult = TcFTOK(dValue);
+			DrawResult(TEMPERATURE_FAHRENHEIT, TEMPERATURE_KELVIN, dValue, dResult);
+			break;
 
-			default:
-				// invalid TempTo index
-				AppInvalidIndex(iTempFrom, iTempTo);
-				break;
+		default:
+			// invalid TempTo index
+			AppInvalidIndex(iTempFrom, iTempTo);
+			break;
 		}
 	}
 
@@ -149,27 +149,27 @@ inline static void AppConvertTemperature()
 		// convert from Kelvin
 		switch (iTempTo)
 		{
-			case TEMP_INDEX_C:
-				// K to C
-				dResult = TcKTOC(dValue);
-				DrawResult(TEMPERATURE_KELVIN, TEMPERATURE_CELSIUS, dValue, dResult);
-				break;
+		case TEMP_INDEX_C:
+			// K to C
+			dResult = TcKTOC(dValue);
+			DrawResult(TEMPERATURE_KELVIN, TEMPERATURE_CELSIUS, dValue, dResult);
+			break;
 
-			case TEMP_INDEX_F:
-				// K to F
-				dResult = TcKTOF(dValue);
-				DrawResult(TEMPERATURE_KELVIN, TEMPERATURE_FAHRENHEIT, dValue, dResult);
-				break;
+		case TEMP_INDEX_F:
+			// K to F
+			dResult = TcKTOF(dValue);
+			DrawResult(TEMPERATURE_KELVIN, TEMPERATURE_FAHRENHEIT, dValue, dResult);
+			break;
 
-			case TEMP_INDEX_K:
-				// K to K
-				DrawResult(TEMPERATURE_KELVIN, TEMPERATURE_KELVIN, dValue, dValue);
-				break;
+		case TEMP_INDEX_K:
+			// K to K
+			DrawResult(TEMPERATURE_KELVIN, TEMPERATURE_KELVIN, dValue, dValue);
+			break;
 
-			default:
-				// invalid TempTo index
-				AppInvalidIndex(iTempFrom, iTempTo);
-				break;
+		default:
+			// invalid TempTo index
+			AppInvalidIndex(iTempFrom, iTempTo);
+			break;
 		}
 	}
 
@@ -186,19 +186,19 @@ INT_PTR CALLBACK DlgHelpProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-		case WM_SHOWWINDOW:
-			MessageBeep(MB_ICONINFORMATION);
-			return TRUE;
+	case WM_SHOWWINDOW:
+		MessageBeep(MB_ICONINFORMATION);
+		return TRUE;
 
 	case WM_SYSCOMMAND:
 	{
 		switch (wParam)
 		{
-			case SC_CLOSE:
-				EndDialog(hDlg, TRUE);
-				return TRUE;
+		case SC_CLOSE:
+			EndDialog(hDlg, TRUE);
+			return TRUE;
 
-			default: return FALSE;
+		default: return FALSE;
 		}
 	}
 
@@ -208,16 +208,16 @@ INT_PTR CALLBACK DlgHelpProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 		switch (wmId)
 		{
 			// the OK button
-			case ID_BTN_OK:
-				EndDialog(hDlg, TRUE);
-				return TRUE;
+		case ID_BTN_OK:
+			EndDialog(hDlg, TRUE);
+			return TRUE;
 
 			// unknown commands
-			default: return FALSE;
+		default: return FALSE;
 		}
 	}
 
-		default: return FALSE;
+	default: return FALSE;
 	}
 }
 
@@ -225,128 +225,128 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-		case WM_INITDIALOG:
+	case WM_INITDIALOG:
+	{
+		HICON hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_APP_ICON));
+		SendMessage(hDlg, WM_SETICON, ICON_SMALL, hIcon);
+		SendMessage(hDlg, WM_SETICON, ICON_BIG, hIcon);
+
+		hBrush = CreateSolidBrush(RGB(0xFF, 0xFF, 0xFF));
+		EnableThemeDialogTexture(hDlg, ETDT_ENABLE);
+
+		// get all control handles
+		hWindow = hDlg;
+		hCbxTempFrom = GetDlgItem(hDlg, IDC_CBX_TEMP_FROM);
+		hCbxTempTo = GetDlgItem(hDlg, IDC_CBX_TEMP_TO);
+		hTxtValue = GetDlgItem(hDlg, IDC_TXT_VALUE);
+		hTxtResult = GetDlgItem(hDlg, IDC_TXT_RESULT);
+
+		HWND hBtnConvert = GetDlgItem(hDlg, IDC_BTN_CONVERT);
+		HWND hBtnClose = GetDlgItem(hDlg, IDC_BTN_CLOSE);
+
+		SetWindowTheme(hBtnConvert, L"Explorer", NULL);
+
+		// Apply visual styles to specific controls
+		/*SetWindowTheme(hCbxTempFrom, L"Explorer", NULL);
+		SetWindowTheme(hCbxTempTo, L"Explorer", NULL);
+		SetWindowTheme(hTxtValue, L"Explorer", NULL);
+		SetWindowTheme(hTxtResult, L"Explorer", NULL);*/
+
+		// set combo box items
+		// Temperature From
+		SendMessage(hCbxTempFrom, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_CELSIUS);
+		SendMessage(hCbxTempFrom, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_FAHRENHEIT);
+		SendMessage(hCbxTempFrom, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_KELVIN);
+
+		// Temperature To
+		SendMessage(hCbxTempTo, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_CELSIUS);
+		SendMessage(hCbxTempTo, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_FAHRENHEIT);
+		SendMessage(hCbxTempTo, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_KELVIN);
+
+		// Set selected items
+		SendMessage(hCbxTempFrom, CB_SETCURSEL, NULL, NULL);
+		SendMessage(hCbxTempTo, CB_SETCURSEL, NULL, NULL);
+
+		// adjust combo box sizes
+		TcSetComboBoxDropdownHeight(hCbxTempFrom, 50);
+		TcSetComboBoxDropdownHeight(hCbxTempTo, 50);
+		return TRUE;
+	}
+
+	case WM_COMMAND:
+	{
+		switch (LOWORD(wParam))
 		{
-			HICON hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_APP_ICON));
-			SendMessage(hDlg, WM_SETICON, ICON_SMALL, hIcon);
-			SendMessage(hDlg, WM_SETICON, ICON_BIG, hIcon);
-			
-			hBrush = CreateSolidBrush(RGB(0xFF, 0xFF, 0xFF));
-			EnableThemeDialogTexture(hDlg, ETDT_ENABLE);
-
-			// get all control handles
-			hWindow = hDlg;
-			hCbxTempFrom = GetDlgItem(hDlg, IDC_CBX_TEMP_FROM);
-			hCbxTempTo = GetDlgItem(hDlg, IDC_CBX_TEMP_TO);
-			hTxtValue = GetDlgItem(hDlg, IDC_TXT_VALUE);
-			hTxtResult = GetDlgItem(hDlg, IDC_TXT_RESULT);
-
-			HWND hBtnConvert = GetDlgItem(hDlg, IDC_BTN_CONVERT);
-			HWND hBtnClose = GetDlgItem(hDlg, IDC_BTN_CLOSE);
-
-			SetWindowTheme(hBtnConvert, L"Explorer", NULL);
-
-			// Apply visual styles to specific controls
-			/*SetWindowTheme(hCbxTempFrom, L"Explorer", NULL);
-			SetWindowTheme(hCbxTempTo, L"Explorer", NULL);
-			SetWindowTheme(hTxtValue, L"Explorer", NULL);
-			SetWindowTheme(hTxtResult, L"Explorer", NULL);*/
-
-			// set combo box items
-			// Temperature From
-			SendMessage(hCbxTempFrom, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_CELSIUS);
-			SendMessage(hCbxTempFrom, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_FAHRENHEIT);
-			SendMessage(hCbxTempFrom, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_KELVIN);
-
-			// Temperature To
-			SendMessage(hCbxTempTo, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_CELSIUS);
-			SendMessage(hCbxTempTo, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_FAHRENHEIT);
-			SendMessage(hCbxTempTo, CB_ADDSTRING, NULL, (LPARAM)TEMPERATURE_KELVIN);
-
-			// Set selected items
-			SendMessage(hCbxTempFrom, CB_SETCURSEL, NULL, NULL);
-			SendMessage(hCbxTempTo, CB_SETCURSEL, NULL, NULL);
-
-			// adjust combo box sizes
-			TcSetComboBoxDropdownHeight(hCbxTempFrom, 50);
-			TcSetComboBoxDropdownHeight(hCbxTempTo, 50);
+		case IDC_BTN_CLOSE:
+		{
+			EndDialog(hDlg, IDCLOSE);
 			return TRUE;
 		}
 
-		case WM_COMMAND:
+		case IDC_BTN_CONVERT:
 		{
-			switch (LOWORD(wParam))
-			{
-				case IDC_BTN_CLOSE:
-				{
-					EndDialog(hDlg, IDCLOSE);
-					return TRUE;
-				}
+			// convert temperature
+			AppConvertTemperature();
+			return TRUE;
+		}
 
-				case IDC_BTN_CONVERT:
-				{
-					// convert temperature
-					AppConvertTemperature();
-					return TRUE;
-				}
+		case ID_FILE_CLOSE:
+			DestroyWindow(hDlg);
+			return TRUE;
 
-				case ID_FILE_CLOSE:
-					DestroyWindow(hDlg);
-					return TRUE;
+		case ID_HELP_ABOUT:
+			DialogBox(NULL, MAKEINTRESOURCE(ID_DIALOG_HELP), hWindow, DlgHelpProc);
+			return TRUE;
+		}
+		return FALSE;
+	}
 
-				case ID_HELP_ABOUT:
-					DialogBox(NULL, MAKEINTRESOURCE(ID_DIALOG_HELP), hWindow, DlgHelpProc);
-					return TRUE;
-			}
+	case WM_DESTROY:
+		DeleteObject(hBrush);
+		return FALSE;
+
+	case WM_SYSCOMMAND:
+	{
+		switch (LOWORD(wParam))
+		{
+		case SC_CLOSE:
+			EndDialog(hDlg, IDCLOSE);
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+	case WM_CTLCOLORDLG:
+		return (INT_PTR)hBrush;
+
+	case WM_CTLCOLORSTATIC:
+	case WM_CTLCOLORBTN:
+	{
+		HDC hdc = GetDC(hDlg);
+		SetBkMode(hdc, hBrush);
+		return hdc;
+	}
+
+	case WM_KEYDOWN:
+	{
+		// doesn't work
+		if (wParam == VK_F1)
+		{
+			DialogBox(NULL, MAKEINTRESOURCE(ID_DIALOG_HELP), hWindow, DlgHelpProc);
+			return TRUE;
+		}
+
+		else
+		{
 			return FALSE;
 		}
+	}
 
-		case WM_DESTROY:
-			DeleteObject(hBrush);
-			return FALSE;
-
-		case WM_SYSCOMMAND:
-		{
-			switch (LOWORD(wParam))
-			{
-			case SC_CLOSE:
-				EndDialog(hDlg, IDCLOSE);
-				return TRUE;
-			}
-			return FALSE;
-		}
-
-		case WM_CTLCOLORDLG:
-			return (INT_PTR)hBrush;
-
-		case WM_CTLCOLORSTATIC:
-		case WM_CTLCOLORBTN:
-		{
-			HDC hdc = GetDC(hDlg);
-			SetBkMode(hdc, hBrush);
-			return hdc;
-		}
-
-		case WM_KEYDOWN:
-		{
-			// doesn't work
-			if (wParam == VK_F1)
-			{
-				DialogBox(NULL, MAKEINTRESOURCE(ID_DIALOG_HELP), hWindow, DlgHelpProc);
-				return TRUE;
-			}
-
-			else
-			{
-				return FALSE;
-			}
-		}
-
-		default:
-		{
-			//DefWindowProc(hDlg, msg, wParam, lParam);
-			return FALSE;
-		}
+	default:
+	{
+		//DefWindowProc(hDlg, msg, wParam, lParam);
+		return FALSE;
+	}
 	}
 
 	return TRUE;

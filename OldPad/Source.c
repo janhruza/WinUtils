@@ -101,7 +101,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return 0;
 
 	case WM_SIZE:
-	//case WM_SIZING:
+		//case WM_SIZING:
 		RECT rect;
 		GetClientRect(hWindow, &rect);
 
@@ -122,36 +122,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 			// Close window
-			case ID_FILE_CLOSE:
-				PostQuitMessage(0);
-				return 0;
+		case ID_FILE_CLOSE:
+			PostQuitMessage(0);
+			return 0;
 
 			// open new window
-			case ID_FILE_NEWWINDOW:
-				AcNewWindow();
-				return 0;
+		case ID_FILE_NEWWINDOW:
+			AcNewWindow();
+			return 0;
 
 			// open file
-			case ID_FILE_OPEN:
-				return 0;
+		case ID_FILE_OPEN:
+			return 0;
 
 			// save file
-			case ID_FILE_SAVE:
-				return 0;
+		case ID_FILE_SAVE:
+			return 0;
 
 			// save file as
-			case ID_FILE_SAVEAS:
-				return 0;
+		case ID_FILE_SAVEAS:
+			return 0;
 
 			// change font family
-			case ID_EDIT_FONT:
-				AcChangeFont(hEdit);
-				return 0;
+		case ID_EDIT_FONT:
+			AcChangeFont(hEdit);
+			return 0;
 
 			// show about dialog
-			case ID_HELP_ABOUT:
-				DialogBox(NULL, MAKEINTRESOURCE(IDD_ABOUT), hWnd, DlgProc);
-				return 0;
+		case ID_HELP_ABOUT:
+			DialogBox(NULL, MAKEINTRESOURCE(IDD_ABOUT), hWnd, DlgProc);
+			return 0;
 		}
 
 		break;

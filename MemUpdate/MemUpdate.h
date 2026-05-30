@@ -27,7 +27,7 @@ typedef enum MURESULT
 
 #pragma region Memory manipulation
 
-inline MURESULT ReadMemory(HANDLE hProcess, LPVOID address, int *buffer, SIZE_T size)
+inline MURESULT ReadMemory(HANDLE hProcess, LPVOID address, int* buffer, SIZE_T size)
 {
 	if (hProcess == NULL) return MU_INVALID_PROCESS;
 	if (size == NULL) return MU_INVALID_HANDLE;
