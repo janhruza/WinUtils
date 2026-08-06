@@ -66,7 +66,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpszC
 
 	// create text edit
 	hEdit = CreateWindow(WC_EDIT, NULL, WS_CHILD | WS_VISIBLE | ES_MULTILINE | ES_AUTOHSCROLL | ES_AUTOVSCROLL | WS_VSCROLL, 0, 0, rect.right, rect.bottom, hWnd, NULL, hInstance, NULL);
-	hDefaultFont = CreateFont(20, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_QUALITY, L"Consolas");
+
+	hDefaultFont = GetStockObject(DEFAULT_GUI_FONT);
 	SendMessage(hEdit, WM_SETFONT, (WPARAM)hDefaultFont, TRUE);
 
 	// show window
@@ -83,6 +84,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpszC
 	return EXIT_SUCCESS;
 }
 
+HFONT hDefaultFont;
+
 /// <summary>
 /// Window procedure callback method.
 /// </summary>
@@ -95,68 +98,67 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-
-	case WM_CLOSE:
-		PostQuitMessage(0);
-		return 0;
-
-	case WM_SIZE:
-		//case WM_SIZING:
-		RECT rect;
-		GetClientRect(hWindow, &rect);
-
-		SetWindowPos(hEdit, NULL, rect.top, rect.left, rect.right, rect.bottom, SWP_DRAWFRAME);
-		return DefWindowProc(hWnd, msg, wParam, lParam);
-
-	case WM_SYSCOMMAND:
-		switch (wParam)
-		{
-		case SC_CLOSE:
-			PostQuitMessage(0);
-			return 0;
-		}
-		return DefWindowProc(hWnd, msg, wParam, lParam);
-
-	case WM_COMMAND:
-
-		switch (wParam)
-		{
-			// Close window
-		case ID_FILE_CLOSE:
+		case WM_CLOSE:
 			PostQuitMessage(0);
 			return 0;
 
-			// open new window
-		case ID_FILE_NEWWINDOW:
-			AcNewWindow();
-			return 0;
+		case WM_SIZE:
+			//case WM_SIZING:
+			RECT rect;
+			GetClientRect(hWindow, &rect);
 
-			// open file
-		case ID_FILE_OPEN:
-			return 0;
+			SetWindowPos(hEdit, NULL, rect.top, rect.left, rect.right, rect.bottom, SWP_DRAWFRAME);
+			return DefWindowProc(hWnd, msg, wParam, lParam);
 
-			// save file
-		case ID_FILE_SAVE:
-			return 0;
+		case WM_SYSCOMMAND:
+			switch (wParam)
+			{
+				case SC_CLOSE:
+					PostQuitMessage(0);
+					return 0;
+			}
+			return DefWindowProc(hWnd, msg, wParam, lParam);
 
-			// save file as
-		case ID_FILE_SAVEAS:
-			return 0;
+		case WM_COMMAND:
 
-			// change font family
-		case ID_EDIT_FONT:
-			AcChangeFont(hEdit);
-			return 0;
+			switch (wParam)
+			{
+				// Close window
+				case ID_FILE_CLOSE:
+					PostQuitMessage(0);
+					return 0;
 
-			// show about dialog
-		case ID_HELP_ABOUT:
-			DialogBox(NULL, MAKEINTRESOURCE(IDD_ABOUT), hWnd, DlgProc);
-			return 0;
-		}
+				// open new window
+				case ID_FILE_NEWWINDOW:
+					AcNewWindow();
+					return 0;
 
-		break;
+				// open file
+				case ID_FILE_OPEN:
+					return 0;
 
-	default:
-		return DefWindowProc(hWnd, msg, wParam, lParam);
+				// save file
+				case ID_FILE_SAVE:
+					return 0;
+
+				// save file as
+				case ID_FILE_SAVEAS:
+					return 0;
+
+				// change font family
+				case ID_EDIT_FONT:
+					AcChangeFont(hEdit);
+					return 0;
+
+				// show about dialog
+				case ID_HELP_ABOUT:
+					DialogBox(NULL, MAKEINTRESOURCE(IDD_ABOUT), hWnd, DlgProc);
+					return 0;
+			}
+
+			break;
+
+		default:
+			return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 }

@@ -12,8 +12,8 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 // definitions
 #define OP_CLASS_NAME		L"Wnd_OldPad"
 #define OP_WINDOW_TITLE		L"Oldpad"
-#define OP_DEFAULT_WIDTH	800
-#define OP_DEFAULT_HEIGHT	600
+#define OP_DEFAULT_WIDTH	640
+#define OP_DEFAULT_HEIGHT	480
 #define OP_UNSAVED_FORMAT	L"%s* - %s" //	filename, window title
 #define OP_SAVED_FORMAT		L"%s - %s"	//	filename, window title
 
