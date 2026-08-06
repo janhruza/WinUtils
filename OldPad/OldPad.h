@@ -60,10 +60,25 @@ INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
+	case WM_HELP:
+	{
+		// prevent new dialog from opening if one is already open
+		return TRUE;
+	}
+
 	case WM_INITDIALOG:
 		HWND hStatic = GetDlgItem(hDlg, IDC_LICENSE_TEXT);
 		SetWindowText(hStatic, OpGetLicenseText());
 		return TRUE;
+
+	case WM_SHOWWINDOW:
+	{
+		if ((BOOL)wParam == TRUE)
+		{
+			MessageBeep(MB_ICONINFORMATION);
+			return TRUE;
+		}
+	}
 
 	case WM_CLOSE:
 		EndDialog(hDlg, IDOK);

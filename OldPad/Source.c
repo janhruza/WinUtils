@@ -102,6 +102,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			PostQuitMessage(0);
 			return 0;
 
+		case WM_HELP:
+		{
+			DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_ABOUT), hWnd, DlgProc);
+			return 0;
+		}
+
 		case WM_SIZE:
 			//case WM_SIZING:
 			RECT rect;
@@ -152,7 +158,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 				// show about dialog
 				case ID_HELP_ABOUT:
-					DialogBox(NULL, MAKEINTRESOURCE(IDD_ABOUT), hWnd, DlgProc);
+					SendMessage(hWnd, WM_HELP, 0, 0);
 					return 0;
 			}
 
