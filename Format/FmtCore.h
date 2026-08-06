@@ -260,12 +260,15 @@ inline BOOL FmtValidate(FormatOptions* options)
 	return TRUE;
 }
 
+BOOL bHelpOpened = FALSE;
 inline BOOL FmtAboutDialog(HWND hParent)
 {
 	HINSTANCE hInst = GetModuleHandle(NULL);
 	WCHAR wText[10000];
 	LoadString(hInst, IDS_ABOUT_FORMAT, wText, 10000);
+	bHelpOpened = TRUE;
 	MessageBox(hParent, wText, L"About Format", MB_OK | MB_ICONINFORMATION);
+	bHelpOpened = FALSE;
 	return TRUE;
 }
 

@@ -27,9 +27,10 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 		// get dialog
 		hDialog = hDlg;
 
+		int idx = 5;
 		HMENU hSystemMenu = GetSystemMenu(hDlg, FALSE);
-		AppendMenu(hSystemMenu, MF_SEPARATOR, 0, NULL);
-		AppendMenu(hSystemMenu, MF_STRING, ID_ABOUT_FORMAT, L"About Format\tF1");
+		InsertMenu(hSystemMenu, idx++, MF_BYPOSITION | MF_SEPARATOR, 0, NULL);
+		InsertMenu(hSystemMenu, idx++, MF_BYPOSITION | MF_STRING, ID_ABOUT_FORMAT, L"About Format\tF1");
 
 		hPopupMenu = CreatePopupMenu();
 		AppendMenu(hPopupMenu, MF_STRING, ID_ABOUT_FORMAT, L"About Format\tF1");
@@ -55,6 +56,18 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 			return hdc;
 		}*/
 
+	case WM_HELP:
+	{
+		// about format dialog
+		// check if help dialog is already opened
+		if (bHelpOpened == FALSE)
+		{
+			FmtAboutDialog(hDlg);
+		}
+		
+		return TRUE;
+	}
+
 	case WM_COMMAND:
 	{
 		switch (LOWORD(wParam))
@@ -64,8 +77,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 			return TRUE;
 
 		case ID_ABOUT_FORMAT:
-			// about format dialog
-			FmtAboutDialog(hDlg);
+			SendMessage(hDlg, WM_HELP, 0, 0);
 			break;
 
 		case ID_REFRESH_UI:

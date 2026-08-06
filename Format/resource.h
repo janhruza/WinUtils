@@ -3,6 +3,7 @@
 // Used by Resources.rc
 //
 #define IDD_FORMVIEW                    101
+#define IDD_DLGFORMAT                   101
 #define IDS_ABOUT_FORMAT                102
 #define IDC_BTN_FORMAT                  1001
 #define IDC_BTN_CLOSE                   1002
