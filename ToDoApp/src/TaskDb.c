@@ -5,8 +5,6 @@ BOOL AddTaskToDb(PTaskDb db, PTaskItem newTask) {
 	PTaskItem* newTasks = (PTaskItem*)realloc(db->tasks, sizeof(PTaskItem) * (db->nCount + 1));
 	if (!newTasks) return FALSE;
 	db->tasks = newTasks;
-
-	// Jen přiřadíme pointer, nekopírujeme data (pokud už je newTask alokován)
 	db->tasks[db->nCount] = newTask;
 	db->nCount++;
 	return TRUE;
@@ -42,7 +40,7 @@ BOOL LoadTasksFromFile(wchar_t* lpFile, PTaskDb outDb) {
 	HANDLE hFile = CreateFileW(lpFile, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile == INVALID_HANDLE_VALUE) return FALSE;
 
-	FreeDb(outDb); // Vyčistíme stávající, pokud existuje
+	FreeDb(outDb);
 
 	DWORD dwRead;
 	ReadFile(hFile, &outDb->nCount, sizeof(long), &dwRead, NULL);
