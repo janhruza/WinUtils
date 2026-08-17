@@ -64,7 +64,7 @@ INT_PTR CALLBACK DialogProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPara
 		{
 			FmtAboutDialog(hDlg);
 		}
-		
+
 		return TRUE;
 	}
 

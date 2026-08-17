@@ -1,7 +1,7 @@
-#include "TCCore.h"
 #include "resource.h"
-#include <stdio.h>
+#include "TCCore.h"
 #include <dwmapi.h>
+#include <stdio.h>
 #pragma comment(lib, "dwmapi.lib")
 
 #include <CommCtrl.h>

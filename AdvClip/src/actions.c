@@ -1,6 +1,6 @@
-#include <Windows.h>
-#include "..\inc\actions.h"
 #include "..\inc/WndHelper.h"
+#include "..\inc\actions.h"
+#include <Windows.h>
 
 void CopyToClipboard(const wchar_t* content)
 {

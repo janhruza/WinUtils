@@ -1,10 +1,10 @@
-#include <Windows.h>
 #include "resource.h"
 #include <dwmapi.h>
 #include <stdio.h>
+#include <Windows.h>
 
-#include "inc/WndHelper.h"
 #include "inc/actions.h"
+#include "inc/WndHelper.h"
 
 #pragma comment(lib, "dwmapi")
 #pragma comment(lib, "uxtheme")

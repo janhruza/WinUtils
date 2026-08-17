@@ -1,7 +1,7 @@
 #pragma once
-#include <Windows.h>
 #include <CommCtrl.h>
 #include <commdlg.h>
+#include <Windows.h>
 
 LOGFONT g_lf = { 0 };
 

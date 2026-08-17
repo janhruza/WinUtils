@@ -1,8 +1,8 @@
 #pragma once
-#include "resource.h"
 #include "AppCommands.h"
-#include <stdio.h>
+#include "resource.h"
 #include <CommCtrl.h>
+#include <stdio.h>
 #include <Windows.h>
 
 #pragma comment(linker,"\"/manifestdependency:type='win32' \

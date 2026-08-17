@@ -1,5 +1,5 @@
-#include <Windows.h>
 #include <stdio.h>
+#include <Windows.h>
 
 int wmain(int argc, const WCHAR* argv[])
 {

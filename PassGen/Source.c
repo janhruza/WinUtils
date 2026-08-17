@@ -1,11 +1,11 @@
 #include <Windows.h>
 
-#include "res/resource.h"
 #include "inc/PGCore.h"
+#include "res/resource.h"
 
+#include <CommCtrl.h>
 #include <stdlib.h>
 #include <time.h>
-#include <CommCtrl.h>
 
 #define MENU_REFRESH	1100
 

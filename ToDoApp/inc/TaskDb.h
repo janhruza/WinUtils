@@ -2,8 +2,8 @@
 #ifndef TASKDB_H
 #define TASKDB_H
 
-#include <windows.h>
 #include "TaskItem.h"
+#include <windows.h>
 
 typedef struct TaskDB_s {
 	long int nCount;

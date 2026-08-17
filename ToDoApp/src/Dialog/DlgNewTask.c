@@ -1,6 +1,6 @@
 #include "..\..\inc\Dialog\DlgNewTask.h"
-#include "..\..\resource.h"
 #include "..\..\inc\TaskItem.h"
+#include "..\..\resource.h"
 
 BOOL CreateTask(HWND hDlg, PTaskItem pTaskItem)
 {

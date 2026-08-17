@@ -98,73 +98,73 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-		case WM_CLOSE:
+	case WM_CLOSE:
+		PostQuitMessage(0);
+		return 0;
+
+	case WM_HELP:
+	{
+		DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_ABOUT), hWnd, DlgProc);
+		return 0;
+	}
+
+	case WM_SIZE:
+		//case WM_SIZING:
+		RECT rect;
+		GetClientRect(hWindow, &rect);
+
+		SetWindowPos(hEdit, NULL, rect.top, rect.left, rect.right, rect.bottom, SWP_DRAWFRAME);
+		return DefWindowProc(hWnd, msg, wParam, lParam);
+
+	case WM_SYSCOMMAND:
+		switch (wParam)
+		{
+		case SC_CLOSE:
+			PostQuitMessage(0);
+			return 0;
+		}
+		return DefWindowProc(hWnd, msg, wParam, lParam);
+
+	case WM_COMMAND:
+
+		switch (wParam)
+		{
+			// Close window
+		case ID_FILE_CLOSE:
 			PostQuitMessage(0);
 			return 0;
 
-		case WM_HELP:
-		{
-			DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_ABOUT), hWnd, DlgProc);
+			// open new window
+		case ID_FILE_NEWWINDOW:
+			AcNewWindow();
+			return 0;
+
+			// open file
+		case ID_FILE_OPEN:
+			return 0;
+
+			// save file
+		case ID_FILE_SAVE:
+			return 0;
+
+			// save file as
+		case ID_FILE_SAVEAS:
+			return 0;
+
+			// change font family
+		case ID_EDIT_FONT:
+			AcChangeFont(hEdit);
+			return 0;
+
+			// show about dialog
+		case ID_HELP_ABOUT:
+			SendMessage(hWnd, WM_HELP, 0, 0);
 			return 0;
 		}
 
-		case WM_SIZE:
-			//case WM_SIZING:
-			RECT rect;
-			GetClientRect(hWindow, &rect);
+		break;
 
-			SetWindowPos(hEdit, NULL, rect.top, rect.left, rect.right, rect.bottom, SWP_DRAWFRAME);
-			return DefWindowProc(hWnd, msg, wParam, lParam);
-
-		case WM_SYSCOMMAND:
-			switch (wParam)
-			{
-				case SC_CLOSE:
-					PostQuitMessage(0);
-					return 0;
-			}
-			return DefWindowProc(hWnd, msg, wParam, lParam);
-
-		case WM_COMMAND:
-
-			switch (wParam)
-			{
-				// Close window
-				case ID_FILE_CLOSE:
-					PostQuitMessage(0);
-					return 0;
-
-				// open new window
-				case ID_FILE_NEWWINDOW:
-					AcNewWindow();
-					return 0;
-
-				// open file
-				case ID_FILE_OPEN:
-					return 0;
-
-				// save file
-				case ID_FILE_SAVE:
-					return 0;
-
-				// save file as
-				case ID_FILE_SAVEAS:
-					return 0;
-
-				// change font family
-				case ID_EDIT_FONT:
-					AcChangeFont(hEdit);
-					return 0;
-
-				// show about dialog
-				case ID_HELP_ABOUT:
-					SendMessage(hWnd, WM_HELP, 0, 0);
-					return 0;
-			}
-
-			break;
-
-		default:
-			return DefWindowProc(hWnd, msg, wParam, lParam);
+	default:
+		return DefWindowProc(hWnd, msg, wParam, lParam);
 	}
 }

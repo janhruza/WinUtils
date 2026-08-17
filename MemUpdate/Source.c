@@ -2,9 +2,9 @@
 * Source.cpp
 * This file contains the main function.
 */
-#include <stdio.h>
 #include "MemUpdate.h"
 #include <stdbool.h>
+#include <stdio.h>
 
 /// <summary>
 /// Representing the console window title
