@@ -1,40 +1,49 @@
 /*
-* Source.cpp
+* Source.c
 * Contains the main method.
 */
 
-#include <iostream>
+#include <stdio.h>
 #include <Windows.h>
 
-bool InjectDLL(DWORD processID, LPWSTR dllPath) {
+static BOOL InjectDLL(DWORD processID, LPWSTR dllPath) {
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
 	if (!hProcess) {
-		std::cerr << "Failed to open target process." << std::endl;
-		return false;
+		fwprintf(stderr, L"Failed to open target process.\n");
+		return FALSE;
 	}
 
 	LPVOID pDllPath = VirtualAllocEx(hProcess, 0, wcslen(dllPath) + 1, MEM_COMMIT, PAGE_READWRITE);
 	if (!pDllPath) {
-		std::cerr << "Failed to allocate memory in target process." << std::endl;
+		fwprintf(stderr, L"Failed to allocate memory in target process.\n");
 		CloseHandle(hProcess);
-		return false;
+		return FALSE;
 	}
 
 	if (!WriteProcessMemory(hProcess, pDllPath, (LPVOID)dllPath, wcslen(dllPath) + 1, 0)) {
-		std::cerr << "Failed to write DLL path to target process memory." << std::endl;
+		fwprintf(stderr, L"Failed to write DLL path to target process memory.\n");
 		VirtualFreeEx(hProcess, pDllPath, 0, MEM_RELEASE);
 		CloseHandle(hProcess);
-		return false;
+		return FALSE;
+	}
+
+	HMODULE hKernel32 = GetModuleHandle(L"kernel32.dll");
+	if (hKernel32 == NULL) {
+		fwprintf(stderr, L"Failed to get handle of kernel32.dll.\n");
+		VirtualFreeEx(hProcess, pDllPath, 0, MEM_RELEASE);
+		CloseHandle(hProcess);
+		return FALSE;
 	}
 
 	HANDLE hThread = CreateRemoteThread(hProcess, 0, 0,
-		(LPTHREAD_START_ROUTINE)GetProcAddress(GetModuleHandle(L"kernel32.dll"), "LoadLibraryA"),
+		(LPTHREAD_START_ROUTINE)GetProcAddress(hKernel32, "LoadLibraryW"),
 		pDllPath, 0, 0);
+
 	if (!hThread) {
-		std::cerr << "Failed to create remote thread in target process." << std::endl;
+		fwprintf(stderr, L"Failed to create remote thread in target process.\n");
 		VirtualFreeEx(hProcess, pDllPath, 0, MEM_RELEASE);
 		CloseHandle(hProcess);
-		return false;
+		return FALSE;
 	}
 
 	WaitForSingleObject(hThread, INFINITE);
@@ -43,11 +52,11 @@ bool InjectDLL(DWORD processID, LPWSTR dllPath) {
 	CloseHandle(hThread);
 	CloseHandle(hProcess);
 
-	return true;
+	return TRUE;
 }
 
 
-HRESULT InjectProcess(LPWSTR application, LPWSTR library)
+static HRESULT InjectProcess(LPWSTR application, LPWSTR library)
 {
 	// start new process, get its PID and inject DLL
 	STARTUPINFO si;
@@ -61,24 +70,24 @@ HRESULT InjectProcess(LPWSTR application, LPWSTR library)
 		CloseHandle(pi.hProcess);
 		CloseHandle(pi.hThread);
 
-		std::cerr << "Unable to create a new process." << std::endl;
+		fwprintf(stderr, L"Unable to create a new process.\n");
 		return E_FAIL;
 	}
 
 	// try attach dll
-	bool value = InjectDLL(pi.dwProcessId, library);
+	BOOL value = InjectDLL(pi.dwProcessId, library);
 
 	// clear memory
 	CloseHandle(pi.hProcess);
 	CloseHandle(pi.hThread);
-	return value == true ? S_OK : E_FAIL;
+	return value == TRUE ? S_OK : E_FAIL;
 }
 
 int wmain(int argc, const LPWSTR argv[])
 {
 	if (argc != 3)
 	{
-		std::wcerr << L"Invalid number of arguments passed.\nUsage: LibInject.exe [exePath] [dllPath]" << std::endl;
+		fwprintf(stderr, L"Invalid number of arguments passed.\nUsage: LibInject.exe [exePath] [dllPath]\n");
 		return EXIT_FAILURE;
 	}
 
