@@ -1,9 +1,9 @@
 #pragma once
+#include <Windows.h>
 #include "AppCommands.h"
 #include "resource.h"
 #include <CommCtrl.h>
 #include <stdio.h>
-#include <Windows.h>
 
 #pragma comment(linker,"\"/manifestdependency:type='win32' \
 name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \

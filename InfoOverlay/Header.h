@@ -1,9 +1,10 @@
 #pragma once
+#include <Windows.h>
 #include "resource.h"
 #include <CommCtrl.h>
 #include <dwmapi.h>
 #include <stdio.h>
-#include <Windows.h>
+
 #pragma comment(lib, "dwmapi.lib")
 #include "List.h"
 

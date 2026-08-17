@@ -1,8 +1,8 @@
+#include <Windows.h>
 #include "inc/Dialog/DlgNewTask.h"
 #include "inc/TaskDb.h"
 #include "inc/TaskItem.h"
 #include "resource.h"
-#include <Windows.h>
 
 #define TASKS_DB_FILE	TEXT("tasks.bin")
 

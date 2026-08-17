@@ -5,8 +5,8 @@
 
 #pragma once
 #include <stdio.h>
-#include <TlHelp32.h>
 #include <Windows.h>
+#include <TlHelp32.h>
 
 #pragma region Data types
 
