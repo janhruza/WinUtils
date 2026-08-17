@@ -4,7 +4,7 @@
 */
 
 #pragma once
-#include <iostream>
+#include <stdio.h>
 #include <Windows.h>
 #include <TlHelp32.h>
 
@@ -12,7 +12,7 @@
 
 typedef const char* STRING;
 
-typedef enum MURESULT
+typedef enum
 {
 	MU_OK,
 	MU_ERROR,
@@ -21,7 +21,7 @@ typedef enum MURESULT
 	MU_INVALID_ADDRESS,
 	MU_INVALID_HANDLE,
 	MU_INVALID_SIZE
-};
+} MURESULT;
 
 #pragma endregion
 
@@ -31,13 +31,13 @@ inline MURESULT ReadMemory(HANDLE hProcess, LPVOID address, int* buffer, SIZE_T 
 {
 	if (hProcess == NULL) return MU_INVALID_PROCESS;
 	if (size == NULL) return MU_INVALID_HANDLE;
-	if (buffer == nullptr) return MU_INVALID_HANDLE;
+	if (buffer == NULL) return MU_INVALID_HANDLE;
 	return ReadProcessMemory(hProcess, address, &buffer, size, NULL) == TRUE ? MU_OK : MU_ERROR;
 }
 
 inline int ReadMemory32(HANDLE hProcess, LPVOID address)
 {
-	if (hProcess == nullptr) return INT_MIN;
+	if (hProcess == NULL) return INT_MIN;
 	if (address == NULL) return INT_MIN;
 
 	int buf;
@@ -48,9 +48,9 @@ inline int ReadMemory32(HANDLE hProcess, LPVOID address)
 
 inline MURESULT WriteMemory(HANDLE hProcess, LPVOID address, int* buffer, SIZE_T size)
 {
-	if (hProcess == nullptr) return MU_INVALID_PROCESS;
-	if (address == nullptr) return MU_INVALID_ADDRESS;
-	if (buffer == nullptr) return MU_INVALID_HANDLE;
+	if (hProcess == NULL) return MU_INVALID_PROCESS;
+	if (address == NULL) return MU_INVALID_ADDRESS;
+	if (buffer == NULL) return MU_INVALID_HANDLE;
 	if (size == NULL) return MU_INVALID_SIZE;
 	return WriteProcessMemory(hProcess, address, buffer, size, NULL) == TRUE ? MU_OK : MU_ERROR;
 }
@@ -63,11 +63,10 @@ inline MURESULT WriteMemory32(HANDLE hProcess, LPVOID address, int value)
 #pragma endregion
 
 #pragma region Process maniulation
-const char* ConvertWCharToChar(const WCHAR* wStr) {
+const char* ConvertWCharToChar(const WCHAR* wStr, char* buf) {
 	int size_needed = WideCharToMultiByte(CP_UTF8, 0, wStr, -1, NULL, 0, NULL, NULL);
-	char* cStr = new char[size_needed];
-	WideCharToMultiByte(CP_UTF8, 0, wStr, -1, cStr, size_needed, NULL, NULL);
-	return cStr;
+	WideCharToMultiByte(CP_UTF8, 0, wStr, -1, buf, size_needed, NULL, NULL);
+	return buf;
 }
 
 inline DWORD GetProcessID(const char* processName) {
@@ -82,7 +81,8 @@ inline DWORD GetProcessID(const char* processName) {
 
 	if (Process32First(snapshot, &processEntry) == TRUE) {
 		do {
-			const char* exeFile = ConvertWCharToChar(processEntry.szExeFile);
+			char exeFile[MAX_PATH];
+			ConvertWCharToChar(processEntry.szExeFile, exeFile);
 
 			if (strcmp(exeFile, processName) == 0) {
 				DWORD processID = processEntry.th32ProcessID;
@@ -101,31 +101,35 @@ inline DWORD GetProcessID(const char* processName) {
 
 #pragma region Session details and logic
 
-typedef struct MU_SESSION
+typedef struct
 {
 	DWORD dwProcessID;
 	HANDLE hProcess;
-	PCHAR sProcessName;
-};
+	wchar_t* sProcessName;
+} MU_SESSION;
 
 inline void FreeSession(MU_SESSION* session)
 {
-	if (session == nullptr) return;
+	if (session == NULL) return;
 	ZeroMemory(session, sizeof(MU_SESSION));
 	return;
 }
 
-inline MURESULT BeginSession(LPSTR processName, MU_SESSION* session)
+inline MURESULT BeginSession(LPWSTR processName, MU_SESSION* session)
 {
-	if (session == nullptr)
+	if (session == NULL)
 	{
 		return MU_INVALID_HANDLE;
 	}
 
 	FreeSession(session);
-	if (strlen(processName) == NULL) return MU_INVALID_SIZE;
+	if (wcslen(processName) == 0) return MU_INVALID_SIZE;
 
-	DWORD id = GetProcessID(processName);
+	// Convert the wide character process name to a regular char string
+	char procName[MAX_PATH];
+	ConvertWCharToChar(processName, procName);
+
+	DWORD id = GetProcessID(procName);
 	if (id == 0) return MU_INVALID_PROCESS;
 
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, id);
@@ -137,7 +141,7 @@ inline MURESULT BeginSession(LPSTR processName, MU_SESSION* session)
 
 inline MURESULT EndSession(MU_SESSION* session)
 {
-	if (session == nullptr) return MU_INVALID_HANDLE;
+	if (session == NULL) return MU_INVALID_HANDLE;
 	FreeSession(session);
 	return MU_OK;
 }

@@ -2,13 +2,14 @@
 * Source.cpp
 * This file contains the main function.
 */
-#include <iostream>
+#include <stdio.h>
 #include "MemUpdate.h"
+#include <stdbool.h>
 
 /// <summary>
 /// Representing the console window title
 /// </summary>
-const LPCSTR windowTitle = "MemUpdate";
+const LPCWSTR windowTitle = TEXT("Memory Update");
 
 inline void ClearBuffer(void)
 {
@@ -17,10 +18,10 @@ inline void ClearBuffer(void)
 	return;
 }
 
-int main(int argc, const char* argv[])
+int wmain(int argc, const char* argv[])
 {
 	// program initialization
-	SetConsoleTitleA(windowTitle);
+	SetConsoleTitle(windowTitle);
 
 	MU_SESSION session;
 
@@ -31,14 +32,14 @@ int main(int argc, const char* argv[])
 
 		// get data with UI
 		// get process name
-		char processName[MAX_PATH] = { NULL };
+		wchar_t processName[MAX_PATH] = { NULL };
 
-		printf_s("Enter process name\n# ");
-		(void)scanf_s("%s", &processName, MAX_PATH);
+		wprintf_s(L"Enter process name\n# ");
+		(void)wscanf_s(L"%s", &processName, MAX_PATH);
 
 		if (BeginSession(processName, &session) != MU_OK)
 		{
-			printf_s("Unable to initialize the session. Make sure the process \'%s\' exists.\nTry again? [Y/n]: ", processName);
+			wprintf_s(L"Unable to initialize the session. Make sure the process \'%s\' exists.\nTry again? [Y/n]: ", processName);
 			ClearBuffer();
 
 			int c = getchar();
@@ -50,7 +51,7 @@ int main(int argc, const char* argv[])
 			else
 			{
 				// return to start
-				printf_s("\n");
+				wprintf_s(L"\n");
 				goto start_no_args;
 			}
 		}
@@ -61,16 +62,16 @@ int main(int argc, const char* argv[])
 		// load data from parameters
 		// load process name
 
-		LPSTR procName = LPSTR(argv[1]);
-		if (strcmp(procName, "") == 0)
+		wchar_t* procName = argv[1];
+		if (wcscmp(procName, L"") == 0)
 		{
-			printf_s("\nInvalid input.\n");
+			wprintf_s(L"\nInvalid input.\n");
 			return EXIT_FAILURE;
 		}
 
 		if (BeginSession(procName, &session) != MU_OK)
 		{
-			printf_s("\nUnable to initialize the session. Make sure the process \'%s\' exists.\n", procName);
+			wprintf_s(L"\nUnable to initialize the session. Make sure the process \'%s\' exists.\n", procName);
 			return EXIT_FAILURE;
 		}
 	}
@@ -86,13 +87,13 @@ int main(int argc, const char* argv[])
 		//	- print result
 
 		// get user input
-		LPSTR input[MAX_PATH] = { NULL };
-		printf_s("[%s (%d)]# ", session.sProcessName, session.dwProcessID);
-		(void)scanf_s("%s", (STRING)input, MAX_PATH);
+		wchar_t input[MAX_PATH] = { NULL };
+		wprintf_s(L"[%s (%d)]# ", session.sProcessName, session.dwProcessID);
+		(void)wscanf_s(L"%s", input, MAX_PATH);
 
 		ClearBuffer();
 
-		if (strcmp((STRING)input, "exit") == 0)
+		if (wcscmp((STRING)input, L"exit") == 0)
 		{
 			return EXIT_SUCCESS;
 		}
