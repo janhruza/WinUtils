@@ -19,6 +19,15 @@ INT_PTR CALLBACK DlgNewTaskProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
 	case WM_INITDIALOG:
 		return (INT_PTR)TRUE;
 
+	case WM_SHOWWINDOW:
+	{
+		if ((BOOL)wParam == TRUE)
+		{
+			MessageBeep(MB_ICONINFORMATION);
+		}
+		return TRUE;
+	}
+
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
 		{
