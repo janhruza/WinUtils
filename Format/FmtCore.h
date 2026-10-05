@@ -186,13 +186,20 @@ inline BOOL FmtRefreshDrives(HWND hCbx)
 	while (*drive)
 	{
 		// handle drive
-		WCHAR volumeName[2048];
-		DWORD dwSerial;
-		DWORD dwMaxComponent;
-		DWORD dwFileSystem;
-		WCHAR wFSName[2048];
+		WCHAR volumeName[2048] = { 0 };
+		DWORD dwSerial = 0;
+		DWORD dwMaxComponent = 0;
+		DWORD dwFileSystem = 0;
+		WCHAR wFSName[2048] = { 0 };
 
 		GetVolumeInformation(drive, volumeName, sizeof(volumeName), &dwSerial, &dwMaxComponent, &dwFileSystem, wFSName, sizeof(wFSName));
+
+		if (dwSerial == 0)
+		{
+			// no serial number, skip this drive
+			drive += lstrlen(drive) + 1;
+			continue;
+		}
 
 		if (lstrlen(volumeName) == 0)
 		{
